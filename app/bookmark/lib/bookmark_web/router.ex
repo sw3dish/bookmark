@@ -20,7 +20,8 @@ defmodule BookmarkWeb.Router do
   scope "/", BookmarkWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", LinkController, :index
+    resources "/links", LinkController, except: [:index]
   end
 
   # Other scopes may use custom stacks.
