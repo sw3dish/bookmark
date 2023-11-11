@@ -22,6 +22,7 @@ defmodule BookmarkWeb.Router do
 
     get "/", LinkController, :index
     resources "/links", LinkController, except: [:index]
+    resources "/imports", ImportController, except: [:edit, :update, :delete]
   end
 
   # Other scopes may use custom stacks.

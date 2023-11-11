@@ -19,4 +19,19 @@ defmodule Bookmark.BookmarksFixtures do
 
     link
   end
+
+  @doc """
+  Generate a import.
+  """
+  def import_fixture(attrs \\ %{}) do
+    {:ok, import} =
+      attrs
+      |> Enum.into(%{
+        data: "some data",
+        type: "some type"
+      })
+      |> Bookmark.Bookmarks.create_import()
+
+    import
+  end
 end

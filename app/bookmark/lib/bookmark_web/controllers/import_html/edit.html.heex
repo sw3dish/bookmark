@@ -1,0 +1,8 @@
+<.header>
+  Edit Import <%= @import.id %>
+  <:subtitle>Use this form to manage import records in your database.</:subtitle>
+</.header>
+
+<.import_form changeset={@changeset} action={~p"/imports/#{@import}"} />
+
+<.back navigate={~p"/imports"}>Back to imports</.back>

@@ -1,0 +1,16 @@
+<.header>
+  Import <%= @import.id %>
+  <:subtitle>This is a import record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/imports/#{@import}/edit"}>
+      <.button>Edit import</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Type"><%= @import.type %></:item>
+  <:item title="Data"><%= @import.data %></:item>
+</.list>
+
+<.back navigate={~p"/imports"}>Back to imports</.back>
