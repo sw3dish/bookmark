@@ -35,7 +35,12 @@ defmodule Bookmark.BookmarksTest do
 
     test "update_link/2 with valid data updates the link" do
       link = link_fixture()
-      update_attrs = %{description: "some updated description", title: "some updated title", url: "some updated url"}
+
+      update_attrs = %{
+        description: "some updated description",
+        title: "some updated title",
+        url: "some updated url"
+      }
 
       assert {:ok, %Link{} = link} = Bookmarks.update_link(link, update_attrs)
       assert link.description == "some updated description"

@@ -1,25 +1,11 @@
-<.header>
-  Listing Links
-  <:actions>
-    <.link href={~p"/links/new"}>
-      <.button>New Link</.button>
-    </.link>
-  </:actions>
-</.header>
-
-<.table id="links" rows={@links} row_click={&JS.navigate(~p"/links/#{&1}")}>
-  <:col :let={link} label="Url"><%= link.url %></:col>
-  <:col :let={link} label="Title"><%= link.title %></:col>
-  <:col :let={link} label="Description"><%= link.description %></:col>
-  <:action :let={link}>
-    <div class="sr-only">
-      <.link navigate={~p"/links/#{link}"}>Show</.link>
+<div class="font-semibold text-left text-zinc-700 text-sm">
+<%= for link <- @links do%>
+  <div class="py-4">
+    <a class="underline text-base" href={link.url}><%= link.url %></a>
+    <div class="flex gap-2">
+      <.link class="text-zinc-500 hover:underline" href={~p"/links/#{link.id}/edit"}>Edit</.link> 
+      <.link class="text-zinc-500 hover:underline" href={~p"/links/#{link.id}/edit"} method="delete" data-confirm="Are you sure?">Delete</.link> 
     </div>
-    <.link navigate={~p"/links/#{link}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={link}>
-    <.link href={~p"/links/#{link}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
-</.table>
+  </div>
+<% end %>
+</div>
