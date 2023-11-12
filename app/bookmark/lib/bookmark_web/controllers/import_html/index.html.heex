@@ -9,7 +9,10 @@
 
 <.table id="imports" rows={@imports} row_click={&JS.navigate(~p"/imports/#{&1}")}>
   <:col :let={import} label="Type"><%= import.type %></:col>
-  <:col :let={import} label="Data"><%= if import.data, do: String.slice(import.data, 0..300), else: "" %></:col>
   <:col :let={import} label="Status"><%= import.status %></:col>
+  <:col :let={import} label="Count"><%= import.count %></:col>
+  <:col :let={import} label="Started at">
+    <%= Timex.format(import.inserted_at, "%Y-%m-%d at %H:%M") %>
+  </:col>
   <:col :let={import} label="Completed at"><%= import.completed_at %></:col>
 </.table>

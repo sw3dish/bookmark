@@ -2,19 +2,30 @@ defmodule Bookmark.ImportTasks do
   alias Bookmark.Imports
 
   def import_links_from_pinboard(import_id, file_contents) do
-      Task.Supervisor.start_child(Bookmark.ImportTaskSupervisor, fn ->
-        links_to_import = Jason.decode!(file_contents)
-        errors =  Enum.reduce(links_to_import, [], fn link, errors -> 
-          with {:ok, pinboard_link}<- Imports.create_pinboard_link(link),
+    Task.Supervisor.start_child(Bookmark.ImportTaskSupervisor, fn ->
+      links_to_import = Jason.decode!(file_contents)
+
+      {count, errors} =
+        Enum.reduce(links_to_import, {0, []}, fn link, {count, errors} ->
+          :timer.sleep(500)
+
+          with {:ok, pinboard_link} <- Imports.create_pinboard_link(link),
                {:ok, _} <- Imports.import_link_from_pinboard(pinboard_link) do
-            errors
+            {count + 1, errors}
           else
-            {:error, %Ecto.Changeset{errors: changeset_errors}} -> errors ++ [{link, changeset_errors}]
+            {:error, %Ecto.Changeset{errors: changeset_errors}} ->
+              {count, errors ++ [{link, changeset_errors}]}
           end
         end)
-        IO.inspect(errors)
-        # %Import{errors: errors} = Bookmarks.get_import!(import_id)
 
-      end)
+      import = Imports.get_import!(import_id)
+
+      Imports.update_import(import, %{
+        errors: errors,
+        count: count,
+        status: "completed",
+        completed_at: NaiveDateTime.local_now()
+      })
+    end)
   end
 end

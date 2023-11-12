@@ -2,8 +2,16 @@
   <.error :if={@changeset.action}>
     Oops, something went wrong! Please check the errors below.
   </.error>
-  <.input field={f[:type]} type="select" label="Type" options={[[key: "Pinboard", value: "pinboard"], [key: "Chrome", value: "chrome", disabled: true]]}/>
-  <hr>
+  <.input
+    field={f[:type]}
+    type="select"
+    label="Type"
+    options={[
+      [key: "Pinboard", value: "pinboard"],
+      [key: "Chrome", value: "chrome", disabled: true]
+    ]}
+  />
+  <hr />
   <.input field={f[:export]} type="file" label="Import file" />
   <p>or</p>
   <.input field={f[:data]} type="textarea" label="Data" />

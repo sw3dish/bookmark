@@ -5,8 +5,8 @@ defmodule Bookmark.Imports.PinboardImportLink do
 
   @primary_key false
   embedded_schema do
-    field :description, :string 
-    field :href, :string 
+    field :description, :string
+    field :href, :string
     field :extended, :string
     field :time, :utc_datetime
     field :toread, :string

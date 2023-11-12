@@ -8,6 +8,7 @@ defmodule Bookmark.Imports.Import do
     field :data, :string
     field :type, :string
     field :status, :string
+    field :count, :integer
     field :completed_at, :utc_datetime
 
     timestamps(type: :utc_datetime)
@@ -16,7 +17,7 @@ defmodule Bookmark.Imports.Import do
   @doc false
   def changeset(import, attrs) do
     import
-    |> cast(attrs, [:type, :data, :status, :completed_at])
+    |> cast(attrs, [:type, :data, :count, :status, :completed_at])
     |> validate_required([:type])
   end
 end

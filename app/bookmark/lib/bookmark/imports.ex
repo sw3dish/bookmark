@@ -103,27 +103,26 @@ defmodule Bookmark.Imports do
     Import.changeset(import, attrs)
   end
 
+  alias Bookmark.Imports.PinboardImportLink
 
   def import_link_from_pinboard(pinboard_link \\ %PinboardImportLink{}) do
-    munged_attrs = Map.new(Map.from_struct(pinboard_link), fn attr -> 
-      case attr do
-        {:description, title} -> {:title, title}
-        {:href, url} -> {:url, url}
-        {:extended, description} -> {:description, description}
-        {:time, time} -> {:created_at, time}
-        pair -> pair
-      end
-    end)
+    munged_attrs =
+      Map.new(Map.from_struct(pinboard_link), fn attr ->
+        case attr do
+          {:description, title} -> {:title, title}
+          {:href, url} -> {:url, url}
+          {:extended, description} -> {:description, description}
+          {:time, time} -> {:created_at, time}
+          pair -> pair
+        end
+      end)
 
     Bookmarks.create_link(munged_attrs)
   end
-
-  alias Bookmark.Imports.PinboardImportLink
 
   def create_pinboard_link(attrs) do
     %PinboardImportLink{}
     |> PinboardImportLink.changeset(attrs)
     |> Ecto.Changeset.apply_action(:update)
   end
-
 end
