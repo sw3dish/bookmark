@@ -1,4 +1,4 @@
-defmodule Bookmark.Bookmarks.Import do
+defmodule Bookmark.Imports.Import do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,6 +7,7 @@ defmodule Bookmark.Bookmarks.Import do
   schema "imports" do
     field :data, :string
     field :type, :string
+    field :status, :string
     field :completed_at, :utc_datetime
 
     timestamps(type: :utc_datetime)
@@ -15,7 +16,7 @@ defmodule Bookmark.Bookmarks.Import do
   @doc false
   def changeset(import, attrs) do
     import
-    |> cast(attrs, [:type, :data, :completed_at])
+    |> cast(attrs, [:type, :data, :status, :completed_at])
     |> validate_required([:type])
   end
 end

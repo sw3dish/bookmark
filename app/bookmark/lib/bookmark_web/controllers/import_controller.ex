@@ -1,16 +1,17 @@
 defmodule BookmarkWeb.ImportController do
   use BookmarkWeb, :controller
 
-  alias Bookmark.Bookmarks
-  alias Bookmark.Bookmarks.Import
+  alias Bookmark.Imports
+  alias Bookmark.ImportTasks
+  alias Bookmark.Imports.Import
 
   def index(conn, _params) do
-    imports = Bookmarks.list_imports()
+    imports = Imports.list_imports()
     render(conn, :index, imports: imports)
   end
 
   def new(conn, _params) do
-    changeset = Bookmarks.change_import(%Import{})
+    changeset = Imports.change_import(%Import{})
     render(conn, :new, changeset: changeset)
   end
 
@@ -18,36 +19,36 @@ defmodule BookmarkWeb.ImportController do
     case import_params do
       %{"export" => %Plug.Upload{content_type: "application/json", path: path}} -> 
         export_contents = File.read!(path)
-        links_to_import = Jason.decode!(export_contents)
-        IO.inspect(links_to_import)
+        ImportTasks.import_links_from_pinboard(1, export_contents)
+      %{"data" => data} ->
+        ImportTasks.import_links_from_pinboard(1, data)
     end
-    render(conn)
-    # case Bookmarks.create_import(import_params) do
-    #   {:ok, import} ->
-    #     conn
-    #     |> put_flash(:info, "Import created successfully.")
-    #     |> redirect(to: ~p"/imports/#{import}")
+    case Imports.create_import(import_params) do
+      {:ok, import} ->
+        conn
+        |> put_flash(:info, "Import started")
+        |> redirect(to: ~p"/imports/#{import}")
 
-    #   {:error, %Ecto.Changeset{} = changeset} ->
-    #     render(conn, :new, changeset: changeset)
-    # end
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, :new, changeset: changeset)
+    end
   end
 
   def show(conn, %{"id" => id}) do
-    import = Bookmarks.get_import!(id)
+    import = Imports.get_import!(id)
     render(conn, :show, import: import)
   end
 
   def edit(conn, %{"id" => id}) do
-    import = Bookmarks.get_import!(id)
-    changeset = Bookmarks.change_import(import)
+    import = Imports.get_import!(id)
+    changeset = Imports.change_import(import)
     render(conn, :edit, import: import, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "import" => import_params}) do
-    import = Bookmarks.get_import!(id)
+    import = Imports.get_import!(id)
 
-    case Bookmarks.update_import(import, import_params) do
+    case Imports.update_import(import, import_params) do
       {:ok, import} ->
         conn
         |> put_flash(:info, "Import updated successfully.")
@@ -59,8 +60,8 @@ defmodule BookmarkWeb.ImportController do
   end
 
   def delete(conn, %{"id" => id}) do
-    import = Bookmarks.get_import!(id)
-    {:ok, _import} = Bookmarks.delete_import(import)
+    import = Imports.get_import!(id)
+    {:ok, _import} = Imports.delete_import(import)
 
     conn
     |> put_flash(:info, "Import deleted successfully.")

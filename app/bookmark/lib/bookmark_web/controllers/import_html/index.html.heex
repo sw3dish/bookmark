@@ -9,16 +9,7 @@
 
 <.table id="imports" rows={@imports} row_click={&JS.navigate(~p"/imports/#{&1}")}>
   <:col :let={import} label="Type"><%= import.type %></:col>
-  <:col :let={import} label="Data"><%= import.data %></:col>
-  <:action :let={import}>
-    <div class="sr-only">
-      <.link navigate={~p"/imports/#{import}"}>Show</.link>
-    </div>
-    <.link navigate={~p"/imports/#{import}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={import}>
-    <.link href={~p"/imports/#{import}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
+  <:col :let={import} label="Data"><%= if import.data, do: String.slice(import.data, 0..300), else: "" %></:col>
+  <:col :let={import} label="Status"><%= import.status %></:col>
+  <:col :let={import} label="Completed at"><%= import.completed_at %></:col>
 </.table>

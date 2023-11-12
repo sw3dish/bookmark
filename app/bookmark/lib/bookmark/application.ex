@@ -16,6 +16,7 @@ defmodule Bookmark.Application do
       {Finch, name: Bookmark.Finch},
       # Start a worker by calling: Bookmark.Worker.start_link(arg)
       # {Bookmark.Worker, arg},
+      {Task.Supervisor, name: Bookmark.ImportTaskSupervisor},
       # Start to serve requests, typically the last entry
       BookmarkWeb.Endpoint
     ]
