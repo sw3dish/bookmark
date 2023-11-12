@@ -8,7 +8,6 @@ defmodule Bookmark.Imports do
 
   alias Bookmark.Imports.Import
   alias Bookmark.Bookmarks
-  alias Bookmark.Imports.PinboardImportLink
 
   @doc """
   Returns the list of imports.
@@ -104,14 +103,8 @@ defmodule Bookmark.Imports do
     Import.changeset(import, attrs)
   end
 
-  def convert_pinboard_link(attrs) do
-    %PinboardImportLink{}
-    |> PinboardImportLink.changeset(attrs)
-    |> Ecto.Changeset.apply_action(:update)
-  end
 
   def import_link_from_pinboard(pinboard_link \\ %PinboardImportLink{}) do
-    IO.inspect(pinboard_link)
     munged_attrs = Map.new(Map.from_struct(pinboard_link), fn attr -> 
       case attr do
         {:description, title} -> {:title, title}
@@ -124,4 +117,13 @@ defmodule Bookmark.Imports do
 
     Bookmarks.create_link(munged_attrs)
   end
+
+  alias Bookmark.Imports.PinboardImportLink
+
+  def create_pinboard_link(attrs) do
+    %PinboardImportLink{}
+    |> PinboardImportLink.changeset(attrs)
+    |> Ecto.Changeset.apply_action(:update)
+  end
+
 end

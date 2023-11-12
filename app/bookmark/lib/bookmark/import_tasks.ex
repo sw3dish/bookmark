@@ -5,7 +5,7 @@ defmodule Bookmark.ImportTasks do
       Task.Supervisor.start_child(Bookmark.ImportTaskSupervisor, fn ->
         links_to_import = Jason.decode!(file_contents)
         errors =  Enum.reduce(links_to_import, [], fn link, errors -> 
-          with {:ok, pinboard_link}<- Imports.convert_pinboard_link(link),
+          with {:ok, pinboard_link}<- Imports.create_pinboard_link(link),
                {:ok, _} <- Imports.import_link_from_pinboard(pinboard_link) do
             errors
           else
