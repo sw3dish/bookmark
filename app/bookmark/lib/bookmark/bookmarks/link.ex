@@ -9,6 +9,8 @@ defmodule Bookmark.Bookmarks.Link do
     field :description, :string
     field :title, :string
     field :url, :string
+    field :favorite, :boolean, default: false
+    field :to_read, :boolean, default: false
 
     timestamps(type: :utc_datetime)
   end
@@ -16,7 +18,7 @@ defmodule Bookmark.Bookmarks.Link do
   @doc false
   def changeset(link, attrs) do
     link
-    |> cast(attrs, [:url, :title, :description])
+    |> cast(attrs, [:url, :title, :description, :favorite, :to_read])
     |> validate_required([:url])
     |> validate_is_valid_url(:url)
   end

@@ -18,7 +18,8 @@ defmodule Bookmark.Bookmarks do
 
   """
   def list_links do
-    Repo.all(Link)
+    query = from l in Link, order_by: l.inserted_at
+    Repo.all(query)
   end
 
   @doc """
@@ -100,18 +101,5 @@ defmodule Bookmark.Bookmarks do
   """
   def change_link(%Link{} = link, attrs \\ %{}) do
     Link.changeset(link, attrs)
-  end
-
-  def import_link_from_pinboard(attrs \\ %{}) do
-    munged_attrs = Map.new(attrs, fn attr -> 
-      case attr do
-        {"description", title} -> {title, title}
-        {"href", url} -> {url, url}
-        {"extended", description} -> {description, description}
-        pair -> pair
-      end
-    end)
-
-    create_link(munged_attrs)
   end
 end
