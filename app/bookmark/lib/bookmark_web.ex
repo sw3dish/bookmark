@@ -52,7 +52,8 @@ defmodule BookmarkWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {BookmarkWeb.Layouts, :app}
+        layout: {BookmarkWeb.Layouts, :app},
+        global_prefixes: ["x-"]
 
       unquote(html_helpers())
     end
@@ -60,7 +61,8 @@ defmodule BookmarkWeb do
 
   def live_component do
     quote do
-      use Phoenix.LiveComponent
+      use Phoenix.LiveComponent,
+          global_prefixes: ["x-"]
 
       unquote(html_helpers())
     end
@@ -68,7 +70,7 @@ defmodule BookmarkWeb do
 
   def html do
     quote do
-      use Phoenix.Component
+      use Phoenix.Component, global_prefixes: ~w(x-)
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
