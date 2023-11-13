@@ -62,7 +62,7 @@ defmodule BookmarkWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent,
-          global_prefixes: ["x-"]
+        global_prefixes: ["x-"]
 
       unquote(html_helpers())
     end

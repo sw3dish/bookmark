@@ -25,6 +25,12 @@ defmodule BookmarkWeb.Router do
     resources "/imports", ImportController, except: [:edit, :update, :delete]
   end
 
+  scope "/api", BookmarkWeb.Api, as: :api do
+    pipe_through :api
+
+    resources "/links", LinkController
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", BookmarkWeb do
   #   pipe_through :api

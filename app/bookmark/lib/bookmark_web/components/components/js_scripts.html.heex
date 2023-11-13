@@ -1,0 +1,26 @@
+<!-- A collection of utility functions for use in Alpine x- attributes -->
+<script>
+  const x_fetch = (endpoint, method, body) => {
+    return fetch(endpoint, {
+      method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+  };
+
+  const x_post = (endpoint, body) => x_fetch(endpoint, "POST", body)
+  const x_put = (endpoint, body) => x_fetch(endpoint, "PUT", body)
+  const x_patch = (endpoint, body) => x_fetch(endpoint, "PATCH", body)
+  const x_get = (endpoint) => {
+    return fetch(endpoint, {
+      method: "GET"
+    })
+  }
+  const x_delete = (endpoint) => {
+    return fetch(endpoint, {
+      method: "DELETE"
+    })
+  }
+</script>

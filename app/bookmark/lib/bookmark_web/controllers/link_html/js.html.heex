@@ -1,0 +1,18 @@
+<script>
+  const put_favorite = (id, status) => {
+    return x_put(`http://localhost:4000/api/links/${id}`, {
+      "link": {
+        "favorite": status
+      }
+    }) 
+  }
+  document.addEventListener('alpine:init', () => {
+      Alpine.data('favorite', (initialFavorite, initialId) => ({
+          favorite: initialFavorite,
+          async onClick() {
+            await put_favorite(initialId, !this.favorite)
+            this.favorite = !this.favorite;
+          }
+      }))
+  })
+</script>

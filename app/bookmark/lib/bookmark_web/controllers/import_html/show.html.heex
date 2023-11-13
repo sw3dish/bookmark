@@ -1,5 +1,8 @@
 <.header>
-  Import <%= @import.id %> on <%= HTMLHelpers.get_human_readable_local_datetime!(@import.completed_at, "%Y-%m-%d %H:%M") %>
+  Import <%= @import.id %> on <%= HTMLHelpers.get_human_readable_local_datetime!(
+    @import.completed_at,
+    "%Y-%m-%d %H:%M"
+  ) %>
 </.header>
 
 <.list>

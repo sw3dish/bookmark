@@ -1,3 +1,5 @@
+<Components.js_scripts />
+<.js />
 <div class="font-semibold text-left text-zinc-700 text-sm">
   <%= for link <- @links do %>
     <div class="flex py-4 gap-4 items-center">
@@ -7,7 +9,7 @@
           <a class="underline text-base" href={link.url}>
             <%= if link.title, do: link.title, else: "[no title]" %>
           </a>
-          
+
           <.link_domain link={link.url} />
         </div>
         <div class="flex gap-2">
