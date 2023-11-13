@@ -1,6 +1,8 @@
 defmodule BookmarkWeb.ImportHTML do
   use BookmarkWeb, :html
 
+  alias BookmarkWeb.Helpers.HTMLHelpers 
+
   embed_templates "import_html/*"
 
   @doc """

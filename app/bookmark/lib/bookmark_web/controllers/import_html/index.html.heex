@@ -12,7 +12,9 @@
   <:col :let={import} label="Status"><%= import.status %></:col>
   <:col :let={import} label="Count"><%= import.count %></:col>
   <:col :let={import} label="Started at">
-    <%= Timex.format(import.inserted_at, "%Y-%m-%d at %H:%M") %>
+    <%= HTMLHelpers.get_human_readable_local_datetime!(import.inserted_at, "%Y-%m-%d %H:%M") %>
   </:col>
-  <:col :let={import} label="Completed at"><%= import.completed_at %></:col>
+  <:col :let={import} label="Completed at">
+    <%= HTMLHelpers.get_human_readable_local_datetime!(import.completed_at, "%Y-%m-%d %H:%M") %>
+  </:col>
 </.table>
