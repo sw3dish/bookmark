@@ -1,10 +1,49 @@
-<header class="px-4 sm:px-6 lg:px-8">
+<header class="max-w-6xl mx-auto">
+  <ul class="relative z-10 flex items-center gap-4 justify-end">
+    <%= if @current_user do %>
+      <li class="text-[0.8125rem] leading-6 text-zinc-900">
+        <%= @current_user.email %>
+      </li>
+      <li>
+        <.link
+          href={~p"/users/settings"}
+          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+          Settings
+        </.link>
+      </li>
+      <li>
+        <.link
+          href={~p"/users/log_out"}
+          method="delete"
+          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+          Log out
+        </.link>
+      </li>
+    <% else %>
+      <li>
+        <.link
+          href={~p"/users/register"}
+          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+          Register
+        </.link>
+      </li>
+      <li>
+        <.link
+          href={~p"/users/log_in"}
+          class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        >
+          Log in
+        </.link>
+      </li>
+    <% end %>
+  </ul>
   <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
-    <div class="flex items-center gap-4">
-      <a href="/" class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-        Bookmark
-      </a>
-    </div>
+    <a href="/" class="bg-lime-200 text-lime-700 rounded-full px-2 font-medium leading-6">
+      Bookmark
+    </a>
     <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
       <a href={~p"/imports"} class="hover:text-zinc-700">
         Imports
