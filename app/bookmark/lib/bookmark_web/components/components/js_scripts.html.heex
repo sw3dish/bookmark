@@ -1,6 +1,6 @@
 <!-- A collection of utility functions for use in Alpine x- attributes -->
 <script>
-  const x_fetch = (endpoint, method, body) => {
+  const xFetch = (endpoint, method, body) => {
     return fetch(endpoint, {
       method,
       headers: {
@@ -10,15 +10,15 @@
     })
   };
 
-  const x_post = (endpoint, body) => x_fetch(endpoint, "POST", body)
-  const x_put = (endpoint, body) => x_fetch(endpoint, "PUT", body)
-  const x_patch = (endpoint, body) => x_fetch(endpoint, "PATCH", body)
-  const x_get = (endpoint) => {
+  const xPost = (endpoint, body) => xFetch(endpoint, "POST", body)
+  const xPut = (endpoint, body) => xFetch(endpoint, "PUT", body)
+  const xPatch = (endpoint, body) => xFetch(endpoint, "PATCH", body)
+  const xGet = (endpoint) => {
     return fetch(endpoint, {
       method: "GET"
     })
   }
-  const x_delete = (endpoint) => {
+  const xDelete = (endpoint) => {
     return fetch(endpoint, {
       method: "DELETE"
     })

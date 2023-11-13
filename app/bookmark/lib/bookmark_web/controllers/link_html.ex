@@ -15,6 +15,8 @@ defmodule BookmarkWeb.LinkHTML do
 
   def link_form(assigns)
 
+  def js(assigns)
+
   attr :link, Link
 
   def link_domain(assigns) do
@@ -41,14 +43,34 @@ defmodule BookmarkWeb.LinkHTML do
     ~H"""
     <button x-data={~s|favorite(#{@link.favorite},"#{@link.id}")|} x-on:click="onClick">
       <span x-show="!favorite" x-cloak={@link.favorite}>
-        <.icon name="hero-heart" />
+        <.icon class="text-zinc-300 hover:text-zinc-700" name="hero-heart" />
       </span>
       <span x-show="favorite" x-cloak={!@link.favorite}>
-        <.icon name="hero-heart-solid" />
+        <.icon name="hero-heart-solid hover:text-zinc-300" />
       </span>
     </button>
     """
   end
 
-  def js(assigns)
+  def link_bookmarklet(assigns) do
+    ~H"""
+    <a href="javascript:(function() {
+        fetch('http://localhost:4000/api/links', {
+          headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        mode: 'no-cors',
+          body: JSON.stringify({
+            link: {
+              url: window.location.href,
+              title: document.title,
+            } 
+          })
+        }) 
+      })()">
+      Read later - Bookmark
+    </a>
+    """
+  end
 end

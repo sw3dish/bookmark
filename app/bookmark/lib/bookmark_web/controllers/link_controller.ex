@@ -57,6 +57,6 @@ defmodule BookmarkWeb.LinkController do
 
     conn
     |> put_flash(:info, "Link deleted successfully.")
-    |> redirect(to: ~p"/links")
+    |> redirect(to: ~p"/")
   end
 end
