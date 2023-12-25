@@ -3,6 +3,7 @@
   <:subtitle>Use this form to manage link records in your database.</:subtitle>
 </.header>
 
+<template x-init="window.location.search.includes('autoclose=true') && document.querySelector('button.submit').click()"></template>
 <.link_form changeset={@changeset} action={~p"/links"} />
 
 <.back navigate={~p"/links"}>Back to links</.back>

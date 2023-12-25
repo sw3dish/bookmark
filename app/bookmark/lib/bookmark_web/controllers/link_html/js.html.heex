@@ -6,13 +6,19 @@
       }
     }) 
   }
+
   document.addEventListener('alpine:init', () => {
-      Alpine.data('favorite', (initialFavorite, initialId) => ({
-          favorite: initialFavorite,
-          async onClick() {
-            await putFavorite(initialId, !this.favorite)
-            this.favorite = !this.favorite;
-          }
-      }))
+    const params = new URLSearchParams(window.location.search)
+    if (params.autoclose) {
+      const el = document.querySelector("button.submit")
+      el.click()
+    }
+    Alpine.data('favorite', (initialFavorite, initialId) => ({
+        favorite: initialFavorite,
+        async onClick() {
+          await putFavorite(initialId, !this.favorite)
+          this.favorite = !this.favorite;
+        }
+    }))
   })
 </script>

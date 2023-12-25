@@ -4,4 +4,6 @@ defmodule BookmarkWeb.Components.Components do
   embed_templates "components/*"
 
   def js_scripts(assigns)
+
+  def link_bookmarklet(assigns)
 end

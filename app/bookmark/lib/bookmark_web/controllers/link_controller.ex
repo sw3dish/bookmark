@@ -9,8 +9,12 @@ defmodule BookmarkWeb.LinkController do
     render(conn, :index, links: links)
   end
 
-  def new(conn, _params) do
-    changeset = Bookmarks.change_link(%Link{})
+  def new(conn, params) do
+    changeset = Bookmarks.change_link(%Link{
+      url: params["url"],
+      title: params["title"],
+      description: params["description"]
+    })
     render(conn, :new, changeset: changeset)
   end
 
