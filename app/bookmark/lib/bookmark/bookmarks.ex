@@ -18,7 +18,7 @@ defmodule Bookmark.Bookmarks do
 
   """
   def list_links do
-    query = from l in Link, order_by: l.inserted_at
+    query = from l in Link, order_by: [desc: l.inserted_at]
     Repo.all(query)
   end
 
