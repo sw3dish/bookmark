@@ -17,7 +17,7 @@ defmodule BookmarkWeb.LinkHTML do
 
   def js(assigns)
 
-  attr :link, Link
+  attr :link, :string
 
   def link_domain(assigns) do
     host = URI.parse(assigns.link).host
@@ -46,7 +46,7 @@ defmodule BookmarkWeb.LinkHTML do
         <.icon class="text-zinc-300 hover:text-zinc-700" name="hero-heart" />
       </span>
       <span x-show="favorite" x-cloak={!@link.favorite}>
-        <.icon name="hero-heart-solid hover:text-zinc-300" />
+        <.icon name="hero-heart-solid" class="text-zinc-700 hover:text-zinc-300" />
       </span>
     </button>
     """

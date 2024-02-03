@@ -5,12 +5,14 @@ defmodule BookmarkWeb.BookmarkletController do
   alias Bookmark.Bookmarks.Link
 
   def new(conn, params) do
-    changeset = Bookmarks.change_link(%Link{
-      url: params["url"],
-      title: params["title"],
-      description: params["description"],
-      to_read: true
-    })
+    changeset =
+      Bookmarks.change_link(%Link{
+        url: params["url"],
+        title: params["title"],
+        description: params["description"],
+        to_read: true
+      })
+
     conn = Phoenix.Controller.put_layout(conn, false)
     render(conn, :new, changeset: changeset)
   end
