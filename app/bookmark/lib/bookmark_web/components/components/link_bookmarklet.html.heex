@@ -1,5 +1,5 @@
 <a href="javascript:(function() {
   const url = location.href;
   const title = document.title;
-  void(t=open(`http://localhost:4000/links/new/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&autoclose=true`, 'Bookmark', 'toolbar=no,width=100,height=100'))
+  void(t=open(`http://localhost:4000/bookmarklet/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, 'Bookmark', 'toolbar=no,width=100,height=100'))
 })()">Bookmarklet</a>

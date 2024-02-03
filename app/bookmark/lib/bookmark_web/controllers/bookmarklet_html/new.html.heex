@@ -1,0 +1,11 @@
+<template x-init="document.querySelector('button.submit').click()"></template>
+<div class="mx-auto max-w-3xl">
+  <.simple_form :let={f} for={@changeset} action={~p"/bookmarklet"}>
+    <.input field={f[:url]} type="text" label="URL" />
+    <.input field={f[:title]} type="text" label="Title" />
+    <.input field={f[:description]} type="textarea" label="Description" />
+    <:actions>
+      <.button class="submit">Save Link</.button>
+    </:actions>
+  </.simple_form>
+</div>

@@ -34,6 +34,14 @@ defmodule BookmarkWeb.Router do
     resources "/imports", ImportController, except: [:edit, :update, :delete]
   end
 
+  scope "/bookmarklet", BookmarkWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/", BookmarkletController, :new
+    post "/", BookmarkletController, :create
+    get "/confirm", BookmarkletController, :confirm
+  end
+
   scope "/api", BookmarkWeb.Api, as: :api do
     pipe_through :api
 
