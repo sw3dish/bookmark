@@ -1,7 +1,7 @@
 defmodule BookmarkWeb.ImportControllerTest do
   use BookmarkWeb.ConnCase
 
-  import Bookmark.BookmarksFixtures
+  import Bookmark.ImportsFixtures
 
   @create_attrs %{data: "some data", type: "some type"}
   @update_attrs %{data: "some updated data", type: "some updated type"}
