@@ -19,6 +19,7 @@ defmodule BookmarkWeb.BookmarkletController do
 
   def create(conn, %{"link" => link_params}) do
     link_params = Map.put(link_params, "user_id", conn.assigns.current_user.id)
+
     case Bookmarks.create_link(link_params) do
       {:ok, _link} ->
         conn

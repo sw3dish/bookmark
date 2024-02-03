@@ -18,6 +18,7 @@ defmodule BookmarkWeb.LinkController do
   def create(conn, %{"link" => link_params}) do
     current_user = conn.assigns.current_user
     link_params = Map.put(link_params, "user_id", current_user.id)
+
     case Bookmarks.create_link(link_params) do
       {:ok, link} ->
         conn
@@ -46,7 +47,7 @@ defmodule BookmarkWeb.LinkController do
   def update(conn, %{"id" => id, "link" => link_params}) do
     current_user = conn.assigns.current_user
     link = Bookmarks.get_link!(id, current_user)
-    
+
     case Bookmarks.update_link(link, link_params) do
       {:ok, link} ->
         conn

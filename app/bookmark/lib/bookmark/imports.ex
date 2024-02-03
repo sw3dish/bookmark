@@ -19,7 +19,9 @@ defmodule Bookmark.Imports do
 
   """
   def list_imports(current_user) do
-    query = from i in Import, where: i.user_id == ^current_user.id, order_by: [desc: i.inserted_at]
+    query =
+      from i in Import, where: i.user_id == ^current_user.id, order_by: [desc: i.inserted_at]
+
     Repo.all(query)
   end
 
@@ -41,6 +43,7 @@ defmodule Bookmark.Imports do
     query = from i in Import, where: i.user_id == ^current_user.id and i.id == ^id
     Repo.one!(query)
   end
+
   @doc """
   Creates a import.
 
@@ -120,6 +123,7 @@ defmodule Bookmark.Imports do
           pair -> pair
         end
       end)
+
     munged_attrs = Map.put(munged_attrs, :user_id, current_user.id)
     Bookmarks.create_link(munged_attrs)
   end

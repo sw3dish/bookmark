@@ -15,7 +15,6 @@ defmodule Bookmark.Accounts.User do
     timestamps(type: :utc_datetime)
   end
 
-
   @doc """
   A user changeset for registration.
 

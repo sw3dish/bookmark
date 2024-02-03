@@ -33,6 +33,7 @@ defmodule BookmarkWeb.ImportController do
   def create(conn, %{"import" => import_params}) do
     current_user = conn.assigns.current_user
     import_params = Map.put(import_params, "user_id", current_user.id)
+
     case Imports.create_import(import_params) do
       {:ok, import} ->
         ImportTasks.import_links_from_pinboard(import.id, import.data, current_user)

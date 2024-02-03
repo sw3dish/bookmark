@@ -15,6 +15,7 @@ defmodule BookmarkWeb.Api.LinkController do
   def create(conn, %{"link" => link_params}) do
     current_user = conn.assigns.current_user
     link_params = Map.put(link_params, "user_id", current_user.id)
+
     with {:ok, %Link{} = link} <- Bookmarks.create_link(link_params) do
       conn
       |> put_status(:created)
