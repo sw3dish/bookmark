@@ -50,7 +50,7 @@ defmodule BookmarkWeb.UserRegistrationLive do
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_form(changeset)
 
-    {:ok, socket, temporary_assigns: [form: nil]}
+    {:ok, socket, temporary_assigns: [form: nil], layout: {BookmarkWeb.Layouts, :bare}}
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do

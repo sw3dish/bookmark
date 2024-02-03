@@ -3,6 +3,14 @@ defmodule BookmarkWeb.Router do
 
   import BookmarkWeb.UserAuth
 
+  def set_layout(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
+    Phoenix.Controller.put_layout(conn, html: {BookmarkWeb.Layouts, :unauthenticated})
+  end
+
+  def set_layout(%Plug.Conn{assigns: %{current_user: current_user}} = conn, _opts) do
+    Phoenix.Controller.put_layout(conn, html: {BookmarkWeb.Layouts, :app})
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -11,6 +19,7 @@ defmodule BookmarkWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug :set_layout
   end
 
   pipeline :api do
@@ -18,7 +27,7 @@ defmodule BookmarkWeb.Router do
   end
 
   scope "/", BookmarkWeb do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
 
     get "/", LinkController, :index
     resources "/links", LinkController, except: [:index]
