@@ -13,25 +13,12 @@ defmodule Bookmark.BookmarksFixtures do
       |> Enum.into(%{
         description: "some description",
         title: "some title",
-        url: "some url"
+        url: "https://example.com",
+        favorite: false,
+        to_read: false
       })
       |> Bookmark.Bookmarks.create_link()
 
     link
-  end
-
-  @doc """
-  Generate a import.
-  """
-  def import_fixture(attrs \\ %{}) do
-    {:ok, import} =
-      attrs
-      |> Enum.into(%{
-        data: "some data",
-        type: "some type"
-      })
-      |> Bookmark.Bookmarks.create_import()
-
-    import
   end
 end
