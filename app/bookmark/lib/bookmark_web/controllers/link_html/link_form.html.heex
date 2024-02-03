@@ -5,6 +5,10 @@
   <.input field={f[:url]} type="text" label="Url" />
   <.input field={f[:title]} type="text" label="Title" />
   <.input field={f[:description]} type="textarea" label="Description" />
+  <div class="flex gap-4">
+    <.input field={f[:to_read]} type="checkbox" label="To read" />
+    <.input field={f[:favorite]} type="checkbox" label="Favorite" />
+  </div>
   <:actions>
     <.button class="submit">Save Link</.button>
   </:actions>

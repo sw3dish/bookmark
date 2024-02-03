@@ -2,14 +2,22 @@
 <.js />
 <div class="font-semibold text-left text-zinc-700 text-sm">
   <%= for link <- @links do %>
-    <div class="flex py-4 gap-4 items-center">
+    <div
+      class={"flex py-4 gap-4 items-center #{if !link.to_read, do: ~s(text-zinc-500)}"}
+      x-data={~s|toRead(#{link.to_read},"#{link.id}")|}
+      x-bind:class="{'text-zinc-500': !status}"
+    >
       <.link_favorite link={link} />
       <div class="flex flex-col">
         <div class="flex gap-2">
-          <a class="underline text-base" href={link.url}>
-            <%= if link.title, do: link.title, else: "[no title]" %>
-          </a>
-
+          <span
+            class={"#{if !link.to_read, do: ~s(line-through)}"}
+            x-bind:class="{'line-through': !status}"
+          >
+            <a class="underline text-base" href={link.url}>
+              <%= if link.title, do: link.title, else: "[no title]" %>
+            </a>
+          </span>
           <.link_domain link={link.url} />
         </div>
         <div class="flex gap-2">
@@ -24,6 +32,13 @@
             data-confirm="Are you sure?"
           >
             Delete
+          </.link>
+          <.link
+            class="text-zinc-500 text-sm"
+            x-on:click="onClick"
+            x-html="status ? 'Mark read' : 'Mark unread'"
+          >
+            <%= if link.to_read, do: "Mark read", else: "Mark unread" %>
           </.link>
         </div>
       </div>

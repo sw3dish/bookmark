@@ -7,18 +7,30 @@
     }) 
   }
 
+  const putToRead = (id, status) => {
+    return xPut(`http://localhost:4000/api/links/${id}`, {
+      "link": {
+        "to_read": status
+      }
+    }) 
+  }
+
   document.addEventListener('alpine:init', () => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.autoclose) {
-      const el = document.querySelector("button.submit")
-      el.click()
-    }
     Alpine.data('favorite', (initialFavorite, initialId) => ({
         favorite: initialFavorite,
         async onClick() {
           await putFavorite(initialId, !this.favorite)
           this.favorite = !this.favorite;
         }
-    }))
+    }));
+
+    Alpine.data('toRead', (initialStatus, initialId) => ({
+      status: initialStatus,
+      async onClick(e) {
+          e.preventDefault()
+          await putToRead(initialId, !this.status)
+          this.status = !this.status
+        }
+    }));
   })
 </script>
