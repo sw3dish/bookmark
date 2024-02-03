@@ -15,6 +15,7 @@
     <%= HTMLHelpers.get_human_readable_local_datetime!(import.inserted_at, "%Y-%m-%d %H:%M") %>
   </:col>
   <:col :let={import} label="Completed at">
-    <%= HTMLHelpers.get_human_readable_local_datetime!(import.completed_at, "%Y-%m-%d %H:%M") %>
+    <%= if import.completed_at,
+      do: HTMLHelpers.get_human_readable_local_datetime!(import.completed_at, "%Y-%m-%d %H:%M") %>
   </:col>
 </.table>
