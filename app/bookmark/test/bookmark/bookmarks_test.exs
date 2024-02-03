@@ -11,12 +11,12 @@ defmodule Bookmark.BookmarksTest do
 
     @invalid_attrs %{description: nil, title: nil, url: nil}
     @invalid_url_attrs %{
-        description: "some description",
-        title: "some title",
-        url: "invalid URL",
-        favorite: true,
-        to_read: true
-      }
+      description: "some description",
+      title: "some title",
+      url: "invalid URL",
+      favorite: true,
+      to_read: true
+    }
 
     test "list_links/1 returns all links created by a certain user" do
       user_1 = user_fixture()
@@ -89,7 +89,7 @@ defmodule Bookmark.BookmarksTest do
         title: "some updated title",
         url: "https://example.com/updated",
         favorite: false,
-        to_read: false,
+        to_read: false
       }
 
       assert {:ok, %Link{} = link} = Bookmarks.update_link(link, update_attrs)
