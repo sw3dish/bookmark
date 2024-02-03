@@ -1,15 +1,20 @@
 defmodule Bookmark.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Bookmark.Bookmarks.Link
+  alias Bookmark.Imports.Import
 
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+    has_many :links, Link
+    has_many :imports, Import
 
     timestamps(type: :utc_datetime)
   end
+
 
   @doc """
   A user changeset for registration.

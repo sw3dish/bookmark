@@ -17,8 +17,8 @@ defmodule Bookmark.Bookmarks do
       [%Link{}, ...]
 
   """
-  def list_links do
-    query = from l in Link, order_by: [desc: l.inserted_at]
+  def list_links(current_user) do
+    query = from l in Link, where: l.user_id == ^current_user.id, order_by: [desc: l.inserted_at]
     Repo.all(query)
   end
 
@@ -36,7 +36,10 @@ defmodule Bookmark.Bookmarks do
       ** (Ecto.NoResultsError)
 
   """
-  def get_link!(id), do: Repo.get!(Link, id)
+  def get_link!(id, current_user) do
+    query = from l in Link, where: l.user_id == ^current_user.id and l.id == ^id
+    Repo.one!(query)
+  end
 
   @doc """
   Creates a link.

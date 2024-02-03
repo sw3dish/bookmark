@@ -18,8 +18,9 @@ defmodule BookmarkWeb.BookmarkletController do
   end
 
   def create(conn, %{"link" => link_params}) do
+    link_params = Map.put(link_params, "user_id", conn.assigns.current_user.id)
     case Bookmarks.create_link(link_params) do
-      {:ok, link} ->
+      {:ok, _link} ->
         conn
         |> redirect(to: ~p"/bookmarklet/confirm")
 

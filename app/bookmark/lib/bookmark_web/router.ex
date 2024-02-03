@@ -7,7 +7,7 @@ defmodule BookmarkWeb.Router do
     Phoenix.Controller.put_layout(conn, html: {BookmarkWeb.Layouts, :unauthenticated})
   end
 
-  def set_layout(%Plug.Conn{assigns: %{current_user: current_user}} = conn, _opts) do
+  def set_layout(%Plug.Conn{assigns: %{current_user: _current_user}} = conn, _opts) do
     Phoenix.Controller.put_layout(conn, html: {BookmarkWeb.Layouts, :app})
   end
 
@@ -24,6 +24,8 @@ defmodule BookmarkWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug :fetch_current_user
   end
 
   scope "/", BookmarkWeb do

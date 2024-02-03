@@ -6,7 +6,8 @@ defmodule BookmarkWeb.ImportController do
   alias Bookmark.Imports.Import
 
   def index(conn, _params) do
-    imports = Imports.list_imports()
+    current_user = conn.assigns.current_user
+    imports = Imports.list_imports(current_user)
     render(conn, :index, imports: imports)
   end
 
@@ -30,9 +31,11 @@ defmodule BookmarkWeb.ImportController do
   end
 
   def create(conn, %{"import" => import_params}) do
+    current_user = conn.assigns.current_user
+    import_params = Map.put(import_params, "user_id", current_user.id)
     case Imports.create_import(import_params) do
       {:ok, import} ->
-        ImportTasks.import_links_from_pinboard(import.id, import.data)
+        ImportTasks.import_links_from_pinboard(import.id, import.data, current_user)
 
         conn
         |> put_flash(:info, "Import started")
@@ -44,18 +47,21 @@ defmodule BookmarkWeb.ImportController do
   end
 
   def show(conn, %{"id" => id}) do
-    import = Imports.get_import!(id)
+    current_user = conn.assigns.current_user
+    import = Imports.get_import!(id, current_user)
     render(conn, :show, import: import)
   end
 
   def edit(conn, %{"id" => id}) do
-    import = Imports.get_import!(id)
+    current_user = conn.assigns.current_user
+    import = Imports.get_import!(id, current_user)
     changeset = Imports.change_import(import)
     render(conn, :edit, import: import, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "import" => import_params}) do
-    import = Imports.get_import!(id)
+    current_user = conn.assigns.current_user
+    import = Imports.get_import!(id, current_user)
 
     case Imports.update_import(import, import_params) do
       {:ok, import} ->
@@ -69,7 +75,8 @@ defmodule BookmarkWeb.ImportController do
   end
 
   def delete(conn, %{"id" => id}) do
-    import = Imports.get_import!(id)
+    current_user = conn.assigns.current_user
+    import = Imports.get_import!(id, current_user)
     {:ok, _import} = Imports.delete_import(import)
 
     conn

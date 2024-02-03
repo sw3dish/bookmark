@@ -18,8 +18,9 @@ defmodule Bookmark.Imports do
       [%Import{}, ...]
 
   """
-  def list_imports do
-    Repo.all(Import)
+  def list_imports(current_user) do
+    query = from i in Import, where: i.user_id == ^current_user.id, order_by: [desc: i.inserted_at]
+    Repo.all(query)
   end
 
   @doc """
@@ -36,8 +37,10 @@ defmodule Bookmark.Imports do
       ** (Ecto.NoResultsError)
 
   """
-  def get_import!(id), do: Repo.get!(Import, id)
-
+  def get_import!(id, current_user) do
+    query = from i in Import, where: i.user_id == ^current_user.id and i.id == ^id
+    Repo.one!(query)
+  end
   @doc """
   Creates a import.
 
@@ -105,7 +108,7 @@ defmodule Bookmark.Imports do
 
   alias Bookmark.Imports.PinboardImportLink
 
-  def import_link_from_pinboard(pinboard_link \\ %PinboardImportLink{}) do
+  def import_link_from_pinboard(pinboard_link \\ %PinboardImportLink{}, current_user) do
     munged_attrs =
       Map.new(Map.from_struct(pinboard_link), fn attr ->
         case attr do
@@ -117,7 +120,7 @@ defmodule Bookmark.Imports do
           pair -> pair
         end
       end)
-
+    munged_attrs = Map.put(munged_attrs, :user_id, current_user.id)
     Bookmarks.create_link(munged_attrs)
   end
 
