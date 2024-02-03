@@ -21,7 +21,7 @@ defmodule Bookmark.ImportTasks do
       Imports.update_import(import, %{
         errors: errors,
         count: count,
-        status: "completed",
+        status: :completed,
         completed_at: NaiveDateTime.local_now()
       })
     end)

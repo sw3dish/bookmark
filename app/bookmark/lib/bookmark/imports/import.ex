@@ -6,8 +6,8 @@ defmodule Bookmark.Imports.Import do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "imports" do
     field :data, :string
-    field :type, :string
-    field :status, :string
+    field :type, Ecto.Enum, values: [:pinboard, :chrome]
+    field :status, Ecto.Enum, values: [:pending, :completed], default: :pending
     field :count, :integer
     field :completed_at, :utc_datetime
     belongs_to :user, User

@@ -1,6 +1,6 @@
 <.header>
   Import <%= @import.id %>
-  <%= if @import.status == "completed" do %>
+  <%= if @import.status == :completed do %>
     on <%= HTMLHelpers.get_human_readable_local_datetime!(
       @import.completed_at,
       "%Y-%m-%d %H:%M"
