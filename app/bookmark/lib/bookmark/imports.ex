@@ -112,7 +112,8 @@ defmodule Bookmark.Imports do
           {:description, title} -> {:title, title}
           {:href, url} -> {:url, url}
           {:extended, description} -> {:description, description}
-          {:time, time} -> {:created_at, time}
+          {:time, time} -> {:inserted_at, time}
+          {:toread, "yes"} -> {:to_read, true}
           pair -> pair
         end
       end)

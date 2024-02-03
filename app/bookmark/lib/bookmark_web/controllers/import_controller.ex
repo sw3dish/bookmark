@@ -15,17 +15,24 @@ defmodule BookmarkWeb.ImportController do
     render(conn, :new, changeset: changeset)
   end
 
+  def create(
+        conn,
+        %{
+          "import" => %{
+            "export" => %Plug.Upload{content_type: "application/json", path: path}
+          }
+        } = import_params
+      ) do
+    export_contents = File.read!(path)
+    import_params = Kernel.put_in(import_params, ["import", "data"], export_contents)
+    {_export, import_params} = Kernel.pop_in(import_params, ["import", "export"])
+    create(conn, import_params)
+  end
+
   def create(conn, %{"import" => import_params}) do
     case Imports.create_import(import_params) do
       {:ok, import} ->
-        case import_params do
-          %{"export" => %Plug.Upload{content_type: "application/json", path: path}} ->
-            export_contents = File.read!(path)
-            ImportTasks.import_links_from_pinboard(import.id, export_contents)
-
-          %{"data" => data} ->
-            ImportTasks.import_links_from_pinboard(import.id, data)
-        end
+        ImportTasks.import_links_from_pinboard(import.id, import.data)
 
         conn
         |> put_flash(:info, "Import started")

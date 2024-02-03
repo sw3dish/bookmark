@@ -7,8 +7,6 @@ defmodule Bookmark.ImportTasks do
 
       {count, errors} =
         Enum.reduce(links_to_import, {0, []}, fn link, {count, errors} ->
-          :timer.sleep(500)
-
           with {:ok, pinboard_link} <- Imports.create_pinboard_link(link),
                {:ok, _} <- Imports.import_link_from_pinboard(pinboard_link) do
             {count + 1, errors}

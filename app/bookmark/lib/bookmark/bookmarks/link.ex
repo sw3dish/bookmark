@@ -18,7 +18,7 @@ defmodule Bookmark.Bookmarks.Link do
   @doc false
   def changeset(link, attrs) do
     link
-    |> cast(attrs, [:url, :title, :description, :favorite, :to_read])
+    |> cast(attrs, [:url, :title, :description, :favorite, :to_read, :inserted_at])
     |> validate_required([:url])
     |> validate_is_valid_url(:url)
   end
