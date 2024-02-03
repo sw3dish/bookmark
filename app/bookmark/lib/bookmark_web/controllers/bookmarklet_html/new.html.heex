@@ -1,9 +1,16 @@
 <template x-init="document.querySelector('button.submit').click()"></template>
 <div class="mx-auto max-w-3xl">
   <.simple_form :let={f} for={@changeset} action={~p"/bookmarklet"}>
+    <.error :if={@changeset.action}>
+      Oops, something went wrong! Please check the errors below.
+    </.error>
     <.input field={f[:url]} type="text" label="URL" />
     <.input field={f[:title]} type="text" label="Title" />
     <.input field={f[:description]} type="textarea" label="Description" />
+    <div class="flex gap-4">
+      <.input field={f[:to_read]} type="checkbox" label="To read" />
+      <.input field={f[:favorite]} type="checkbox" label="Favorite" />
+    </div>
     <:actions>
       <.button class="submit">Save Link</.button>
     </:actions>
