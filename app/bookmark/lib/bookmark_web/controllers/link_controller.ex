@@ -26,7 +26,6 @@ defmodule BookmarkWeb.LinkController do
         |> redirect(to: ~p"/links/#{link}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset.errors)
         render(conn, :new, changeset: changeset)
     end
   end

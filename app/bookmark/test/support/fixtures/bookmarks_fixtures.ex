@@ -12,7 +12,7 @@ defmodule Bookmark.BookmarksFixtures do
       attrs
       |> Enum.into(%{
         description: "some description",
-        title: "some title",
+        title: "some #{System.unique_integer()} title",
         url: "https://example.com",
         favorite: false,
         to_read: false

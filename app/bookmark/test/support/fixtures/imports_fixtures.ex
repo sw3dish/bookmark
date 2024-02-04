@@ -12,7 +12,7 @@ defmodule Bookmark.ImportsFixtures do
       attrs
       |> Enum.into(%{
         data: "some data",
-        type: :pinboard,
+        type: :pinboard
       })
       |> Bookmark.Imports.create_import()
 

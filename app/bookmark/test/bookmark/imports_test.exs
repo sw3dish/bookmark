@@ -12,12 +12,12 @@ defmodule Bookmark.ImportsTest do
     @invalid_status_attrs %{
       data: "some data",
       type: :pinboard,
-      status: :invalid,
+      status: :invalid
     }
 
     @invalid_type_attrs %{
       data: "some data",
-      type: :invalid,
+      type: :invalid
     }
 
     test "list_imports/0 returns all imports" do
@@ -38,6 +38,7 @@ defmodule Bookmark.ImportsTest do
       user_1 = user_fixture()
       user_2 = user_fixture()
       import = import_fixture(%{user_id: user_1.id})
+
       assert_raise Ecto.NoResultsError, fn ->
         Imports.get_import!(import.id, user_2)
       end
@@ -77,6 +78,7 @@ defmodule Bookmark.ImportsTest do
     test "update_import/2 with valid data updates the import" do
       user = user_fixture()
       import = import_fixture(%{user_id: user.id})
+
       update_attrs = %{
         data: "some updated data",
         type: :chrome,
