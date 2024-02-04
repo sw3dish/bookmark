@@ -20,5 +20,6 @@ defmodule Bookmark.Imports.Import do
     import
     |> cast(attrs, [:type, :data, :count, :status, :user_id, :completed_at])
     |> validate_required([:type, :user_id])
+    |> foreign_key_constraint(:user_id)
   end
 end
