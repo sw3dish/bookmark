@@ -4,7 +4,7 @@ defmodule Bookmark.AccountsTest do
   alias Bookmark.Accounts
 
   import Bookmark.AccountsFixtures
-  alias Bookmark.Accounts.{User, UserToken}
+  alias Bookmark.Accounts.{RegistrationToken, User, UserToken}
 
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do
@@ -328,6 +328,46 @@ defmodule Bookmark.AccountsTest do
           context: "session"
         })
       end
+    end
+  end
+
+  describe "generate_registration_token/1" do
+    test "generates a valid registration token" do
+      user = user_fixture()
+
+      assert {:ok, %RegistrationToken{} = token} =
+               Accounts.generate_registration_token(
+                 generated_by_user_id: user.id,
+                 scoped_to_email: "test@example.com"
+               )
+
+      assert token.generated_by_user_id == user.id
+      assert token.scoped_to_email == "test@example.com"
+      assert token.token
+      assert token.token_string
+      refute token.used_by_user_id
+    end
+
+    test "validates generated_by_user_id when supplied" do
+      assert {:error, changeset} =
+               Accounts.generate_registration_token(
+                 generated_by_user_id: 123_456,
+                 scoped_to_email: "test@example.com"
+               )
+
+      assert %{generated_by_user_id: ["does not exist"]} == errors_on(changeset)
+    end
+
+    test "errors when no email is passed in" do
+      user = user_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.generate_registration_token(generated_by_user_id: user.id)
+    end
+
+    test "errors when no generated_by user is passed in" do
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.generate_registration_token(scoped_to_email: "test@example.com")
     end
   end
 

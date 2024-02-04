@@ -1,7 +1,10 @@
 <Components.js_scripts />
 <.js />
 <div class="pb-3 font-semibold text-left text-zinc-900 text-sm flex w-40 justify-between">
-  <.link class={"hover:underline #{assigns.conn.request_path == ~p"/" && ~s|text-red-900| }"} href={~p"/"}>
+  <.link
+    class={"hover:underline #{assigns.conn.request_path == ~p"/" && ~s|text-red-900| }"}
+    href={~p"/"}
+  >
     All
   </.link>
   <.link class="hover:underline" href={~p"/links/favorites"}>
