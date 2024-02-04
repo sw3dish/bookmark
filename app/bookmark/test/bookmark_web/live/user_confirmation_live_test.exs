@@ -72,8 +72,9 @@ defmodule BookmarkWeb.UserConfirmationLiveTest do
     end
 
     test "does not confirm email with invalid token", %{conn: conn, user: user} do
-      conn = conn
-              |> log_in_user(user)
+      conn =
+        conn
+        |> log_in_user(user)
 
       {:ok, lv, _html} = live(conn, ~p"/users/confirm/invalid-token")
 
