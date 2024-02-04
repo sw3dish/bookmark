@@ -120,6 +120,7 @@ defmodule Bookmark.Imports do
           {:extended, description} -> {:description, description}
           {:time, time} -> {:inserted_at, time}
           {:toread, "yes"} -> {:to_read, true}
+          {:toread, "no"} -> {:to_read, false}
           pair -> pair
         end
       end)

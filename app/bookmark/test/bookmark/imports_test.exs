@@ -5,6 +5,7 @@ defmodule Bookmark.ImportsTest do
 
   describe "imports" do
     alias Bookmark.Imports.Import
+    alias Bookmark.Imports.PinboardImportLink
     import Bookmark.AccountsFixtures
     import Bookmark.ImportsFixtures
 
@@ -130,6 +131,57 @@ defmodule Bookmark.ImportsTest do
       user = user_fixture()
       import = import_fixture(%{user_id: user.id})
       assert %Ecto.Changeset{} = Imports.change_import(import)
+    end
+
+    test "create_pinboard_link/1 returns an in-memory PinboardImportLink" do
+      pinboard_link_attrs = %{
+        description: "Title",
+        href: "https://example.com",
+        extended: "This is a description",
+        time: ~U[2024-02-03 21:12:59Z],
+        toread: "yes"
+      }
+
+      {:ok, %PinboardImportLink{} = pinboard_link} =
+        Imports.create_pinboard_link(pinboard_link_attrs)
+
+      assert pinboard_link.description == "Title"
+      assert pinboard_link.href == "https://example.com"
+      assert pinboard_link.extended == "This is a description"
+
+      assert pinboard_link.time == ~U[2024-02-03 21:12:59Z]
+      assert(pinboard_link.toread == "yes")
+    end
+
+    test "create_pinboard_link/1 requires required fields (href, time, toread)" do
+      pinboard_link_attrs = %{
+        description: "Title",
+        extended: "This is a description"
+      }
+
+      {:error, %Ecto.Changeset{}} =
+        Imports.create_pinboard_link(pinboard_link_attrs)
+    end
+
+    test "import_link_from_pinboard/2 creates a new link" do
+      pinboard_link_attrs = %{
+        description: "Title",
+        href: "https://example.com",
+        extended: "This is a description",
+        time: ~U[2024-02-03 21:12:59Z],
+        toread: "yes"
+      }
+
+      user = user_fixture()
+      {:ok, pinboard_link} = Imports.create_pinboard_link(pinboard_link_attrs)
+
+      {:ok, link} = Imports.import_link_from_pinboard(pinboard_link, user)
+
+      assert link.title == "Title"
+      assert link.url == "https://example.com"
+      assert link.description == "This is a description"
+      assert link.inserted_at == ~U[2024-02-03 21:12:59Z]
+      assert link.to_read == true
     end
   end
 end
