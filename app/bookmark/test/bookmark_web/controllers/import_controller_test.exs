@@ -59,6 +59,7 @@ defmodule BookmarkWeb.ImportControllerTest do
       conn = get(conn, ~p"/imports/#{id}")
       assert html_response(conn, 200) =~ "Import #{id}"
 
+      # Clean up tasks from the import
       on_exit(fn ->
         for pid <- Task.Supervisor.children(Bookmark.ImportTaskSupervisor) do
           ref = Process.monitor(pid)
