@@ -7,8 +7,8 @@ defmodule BookmarkWeb.UserLoginLive do
       <.header class="text-center">
         Sign in to account
         <:subtitle>
-          Don't have an account?
-          Ask a user for an account 😉.
+          Don't have an account?<br/>
+          Ask a user to email you an invite link 😉.
         </:subtitle>
       </.header>
 
