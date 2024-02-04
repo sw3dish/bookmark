@@ -151,7 +151,16 @@ defmodule BookmarkWeb.UserAuth do
     socket = mount_current_user(socket, session)
 
     if socket.assigns.current_user do
-      {:cont, socket}
+      if socket.assigns.current_user.confirmed_at do
+        {:cont, socket}
+      else
+        socket =
+          socket
+          |> Phoenix.LiveView.put_flash(:error, "You must confirm your account to access this page.")
+          |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
+
+        {:halt, socket}
+      end
     else
       socket =
         socket
@@ -165,7 +174,7 @@ defmodule BookmarkWeb.UserAuth do
   def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
     socket = mount_current_user(socket, session)
 
-    if socket.assigns.current_user do
+    if socket.assigns.current_user && socket.assigns.current_user.confirmed_at do
       {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
     else
       {:cont, socket}
@@ -184,7 +193,7 @@ defmodule BookmarkWeb.UserAuth do
   Used for routes that require the user to not be authenticated.
   """
   def redirect_if_user_is_authenticated(conn, _opts) do
-    if conn.assigns[:current_user] do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].confirmed_at do
       conn
       |> redirect(to: signed_in_path(conn))
       |> halt()
@@ -201,7 +210,15 @@ defmodule BookmarkWeb.UserAuth do
   """
   def require_authenticated_user(conn, _opts) do
     if conn.assigns[:current_user] do
-      conn
+      if conn.assigns[:current_user].confirmed_at do
+        conn
+      else
+        conn
+        |> put_flash(:error, "You must confirm your account to access this page.")
+        |> maybe_store_return_to()
+        |> redirect(to: ~p"/users/log_in")
+        |> halt()
+      end
     else
       conn
       |> put_flash(:error, "You must log in to access this page.")

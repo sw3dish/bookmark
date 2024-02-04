@@ -22,5 +22,6 @@ defmodule Bookmark.Bookmarks.Link do
     |> cast(attrs, [:url, :title, :description, :favorite, :to_read, :user_id, :inserted_at])
     |> validate_required([:url, :user_id])
     |> validate_is_valid_url(:url)
+    |> foreign_key_constraint(:user_id)
   end
 end
