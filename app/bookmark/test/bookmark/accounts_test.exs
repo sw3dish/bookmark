@@ -48,9 +48,14 @@ defmodule Bookmark.AccountsTest do
     end
   end
 
-  describe "register_user/1" do
+  describe "register_user_with_token/2 - invalid user attributes" do
     test "requires email and password to be set" do
-      {:error, changeset} = Accounts.register_user(%{})
+      user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: "test@example.com",
+        generated_by_user_id: user.id
+      })
+      {:error, changeset} = Accounts.register_user_with_token(token, %{})
 
       assert %{
                password: ["can't be blank"],
@@ -59,7 +64,12 @@ defmodule Bookmark.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+      user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: "test@example.com",
+        generated_by_user_id: user.id
+      })
+      {:error, changeset} = Accounts.register_user_with_token(token, %{email: "not valid", password: "not valid"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
@@ -68,29 +78,119 @@ defmodule Bookmark.AccountsTest do
     end
 
     test "validates maximum values for email and password for security" do
+      user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: "test@example.com",
+        generated_by_user_id: user.id
+      })
       too_long = String.duplicate("db", 100)
-      {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
+      {:error, changeset} = Accounts.register_user_with_token(token, %{email: too_long, password: too_long})
       assert "should be at most 160 character(s)" in errors_on(changeset).email
       assert "should be at most 72 character(s)" in errors_on(changeset).password
     end
 
     test "validates email uniqueness" do
-      %{email: email} = user_fixture()
-      {:error, changeset} = Accounts.register_user(%{email: email})
+      %{email: email, id: id} = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: "test@example.com",
+        generated_by_user_id: id
+      })
+      {:error, changeset} = Accounts.register_user_with_token(token, %{email: email})
       assert "has already been taken" in errors_on(changeset).email
 
       # Now try with the upper cased email too, to check that email case is ignored.
-      {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
+      {:error, changeset} = Accounts.register_user_with_token(token, %{email: String.upcase(email)})
       assert "has already been taken" in errors_on(changeset).email
     end
+  end
 
-    test "registers users with a hashed password" do
+  describe "register_user_with_token/2 - valid token, valid user" do
+    test "when valid attributes and token, registers user with hashed password and consumes token" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(valid_user_attributes(email: email))
+      inviting_user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: email,
+        generated_by_user_id: inviting_user.id
+      })
+
+      {:ok, user} = Accounts.register_user_with_token(token.token_string, valid_user_attributes(email: email))
+
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
       assert is_nil(user.password)
+
+      updated_token = Repo.get!(RegistrationToken, token.id)
+      assert updated_token.used_by_user_id == user.id
+    end
+
+    test "with badly formatted token returns error" do
+      email = unique_user_email()
+
+      {:error, changeset} = Accounts.register_user_with_token(1234, valid_user_attributes(email: email))
+
+      assert %{
+        registration_token: ["Invalid registration token"]
+      } = errors_on(changeset)
+    end
+
+    test "when token has expired returns error" do
+      email = unique_user_email()
+      inviting_user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: email,
+        generated_by_user_id: inviting_user.id,
+      })
+
+      {1, nil} =  Repo.update_all(RegistrationToken, set: [inserted_at: ~U[2020-01-01 00:00:00Z]])
+
+      {:error, changeset} = Accounts.register_user_with_token(token.token_string, valid_user_attributes(email: email))
+
+      assert %{
+        registration_token: ["Invalid registration token"]
+      } = errors_on(changeset)
+
+      updated_token = Repo.get!(RegistrationToken, token.id)
+      refute updated_token.used_by_user_id
+    end
+
+    test "when token has already been used returns error" do
+      email = unique_user_email()
+      inviting_user = user_fixture()
+      previous_user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: email,
+        generated_by_user_id: inviting_user.id,
+      })
+
+      {1, nil} =  Repo.update_all(RegistrationToken, set: [used_by_user_id: previous_user.id])
+
+      {:error, changeset} = Accounts.register_user_with_token(token.token_string, valid_user_attributes(email: email))
+
+      assert %{
+        registration_token: ["Invalid registration token"]
+      } = errors_on(changeset)
+
+      updated_token = Repo.get!(RegistrationToken, token.id)
+      assert updated_token.used_by_user_id == previous_user.id
+    end
+
+    test "when given an incorrect email returns error" do
+      email = unique_user_email()
+      inviting_user = user_fixture()
+      token = registration_token_fixture(%{
+        scoped_to_email: email,
+        generated_by_user_id: inviting_user.id,
+      })
+
+      {:error, changeset} = Accounts.register_user_with_token(token.token_string, valid_user_attributes(email: "#{email}test"))
+
+      assert %{
+        registration_token: ["Invalid registration token"]
+      } = errors_on(changeset)
+
+      updated_token = Repo.get!(RegistrationToken, token.id)
+      refute updated_token.used_by_user_id
     end
   end
 

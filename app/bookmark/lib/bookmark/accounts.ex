@@ -74,63 +74,10 @@ defmodule Bookmark.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def register_user(attrs) do
+  defp register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
-  end
-
-  def register_user_with_token(token_string, attrs) do
-    token_string
-    |> maybe_get_registration_token()
-    |> maybe_register_user_with_token(attrs)
-  end
-
-  @hash_algorithm :sha256
-  defp maybe_get_registration_token(token) when is_binary(token) do
-    case Base.url_decode64(token, padding: false) do
-      {:ok, decoded_token} ->
-        hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
-
-        RegistrationToken.get_registration_token_query(hashed_token)
-        |> Repo.one()
-
-      :error ->
-        nil
-    end
-  end
-
-  defp maybe_get_registration_token(_), do: nil
-
-  defp maybe_register_user_with_token(%RegistrationToken{scoped_to_email: email} = token, attrs) do
-    if email == (attrs["email"] || attrs[:email]) do
-      Repo.transaction(fn ->
-        with {:ok, user} <- register_user(attrs),
-             {:ok, _registration_token} <- consume_registration_token(token, user) do
-          user
-        else
-          {:error, error} ->
-            Repo.rollback(error)
-        end
-      end)
-    else
-      invalid_token_response(attrs)
-    end
-  end
-
-  defp maybe_register_user_with_token(_, attrs) do
-    invalid_token_response(attrs)
-  end
-
-  defp consume_registration_token(token, user) do
-    RegistrationToken.consume_token_changeset(token, user.id)
-    |> Repo.update()
-  end
-  defp invalid_token_response(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs)
-    |> Ecto.Changeset.add_error(:registration_token, "Invalid registration token")
-    |> Ecto.Changeset.apply_action(:update)
   end
 
   @doc """
@@ -406,7 +353,6 @@ defmodule Bookmark.Accounts do
 
   def generate_registration_token(opts \\ []) do
     {token_string, hashed_token} = RegistrationToken.build_hashed_token()
-
     %{
       token: hashed_token,
       token_string: token_string,
@@ -415,5 +361,59 @@ defmodule Bookmark.Accounts do
     }
     |> RegistrationToken.create_changeset()
     |> Repo.insert()
+  end
+
+  def register_user_with_token(token_string, attrs) do
+    token_string
+    |> maybe_get_registration_token()
+    |> maybe_register_user_with_token(attrs)
+  end
+
+  @hash_algorithm :sha256
+  defp maybe_get_registration_token(token) when is_binary(token) do
+    case Base.url_decode64(token, padding: false) do
+      {:ok, decoded_token} ->
+        hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
+
+        RegistrationToken.get_registration_token_query(hashed_token)
+        |> Repo.one()
+
+      :error ->
+        nil
+    end
+  end
+
+  defp maybe_get_registration_token(_), do: nil
+
+  defp maybe_register_user_with_token(%RegistrationToken{scoped_to_email: email} = token, attrs) do
+    if email == (attrs["email"] || attrs[:email]) do
+      Repo.transaction(fn ->
+        with {:ok, user} <- register_user(attrs),
+             {:ok, _registration_token} <- consume_registration_token(token, user) do
+          user
+        else
+          {:error, error} ->
+            Repo.rollback(error)
+        end
+      end)
+    else
+      invalid_token_response(attrs)
+    end
+  end
+
+  defp maybe_register_user_with_token(_, attrs) do
+    invalid_token_response(attrs)
+  end
+
+  defp consume_registration_token(token, user) do
+    RegistrationToken.consume_token_changeset(token, user.id)
+    |> Repo.update()
+  end
+
+  defp invalid_token_response(attrs) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Ecto.Changeset.add_error(:registration_token, "Invalid registration token")
+    |> Ecto.Changeset.apply_action(:update)
   end
 end
