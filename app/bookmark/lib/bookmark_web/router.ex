@@ -32,6 +32,8 @@ defmodule BookmarkWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/", LinkController, :index
+    get "/links/favorites", LinkController, :favorites
+    get "/links/to_read", LinkController, :to_read
     resources "/links", LinkController, except: [:index]
     resources "/imports", ImportController, except: [:edit, :update, :delete]
   end

@@ -10,6 +10,18 @@ defmodule BookmarkWeb.LinkController do
     render(conn, :index, links: links)
   end
 
+  def favorites(conn, _params) do
+    current_user = conn.assigns.current_user
+    links = Bookmarks.list_favorites(current_user)
+    render(conn, :index, links: links)
+  end
+
+  def to_read(conn, _params) do
+    current_user = conn.assigns.current_user
+    links = Bookmarks.list_to_read(current_user)
+    render(conn, :index, links: links)
+  end
+
   def new(conn, _params) do
     changeset = Bookmarks.change_link(%Link{})
     render(conn, :new, changeset: changeset)

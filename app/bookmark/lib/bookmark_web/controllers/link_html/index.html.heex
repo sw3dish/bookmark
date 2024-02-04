@@ -1,5 +1,16 @@
 <Components.js_scripts />
 <.js />
+<div class="pb-3 font-semibold text-left text-zinc-900 text-sm flex w-40 justify-between">
+  <.link class={"hover:underline #{assigns.conn.request_path == ~p"/" && ~s|text-red-900| }"} href={~p"/"}>
+    All
+  </.link>
+  <.link class="hover:underline" href={~p"/links/favorites"}>
+    Favorites
+  </.link>
+  <.link class="hover:underline" href={~p"/links/to_read"}>
+    To read
+  </.link>
+</div>
 <div class="font-semibold text-left text-zinc-700 text-sm">
   <%= for link <- @links do %>
     <div

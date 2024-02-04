@@ -23,6 +23,22 @@ defmodule Bookmark.Bookmarks do
   end
 
   @doc """
+
+  """
+  def list_favorites(current_user) do
+    query = from l in Link, where: l.user_id == ^current_user.id and l.favorite == true, order_by: [desc: l.inserted_at]
+    Repo.all(query)
+  end
+
+  @doc """
+
+  """
+  def list_to_read(current_user) do
+    query = from l in Link, where: l.user_id == ^current_user.id and l.to_read == true, order_by: [desc: l.inserted_at]
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single link.
 
   Raises `Ecto.NoResultsError` if the Link does not exist.
