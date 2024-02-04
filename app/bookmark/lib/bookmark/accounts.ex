@@ -61,19 +61,16 @@ defmodule Bookmark.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   ## User registration
-
-  @doc """
-  Registers a user.
-
-  ## Examples
-
-      iex> register_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> register_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
+  #
+  # Registers a user.
+  #
+  # ## Examples
+  #
+  #     iex> register_user(%{field: value})
+  #     {:ok, %User{}}
+  #
+  #     iex> register_user(%{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
   defp register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)

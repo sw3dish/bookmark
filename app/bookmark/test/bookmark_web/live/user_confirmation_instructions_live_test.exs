@@ -8,7 +8,7 @@ defmodule BookmarkWeb.UserConfirmationInstructionsLiveTest do
   alias Bookmark.Repo
 
   setup do
-    %{user: user_fixture()}
+    %{user: unconfirmed_user_fixture()}
   end
 
   describe "Resend confirmation" do

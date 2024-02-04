@@ -122,7 +122,7 @@ defmodule BookmarkWeb.CoreComponents do
       x-data="{ show: true }"
       x-show="show"
       x-transition-opacity
-      x-init="setTimeout(() => show = false, 2500)"
+      x-init="setTimeout(() => show = false, 7500)"
       {@rest}
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">

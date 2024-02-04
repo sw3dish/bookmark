@@ -99,20 +99,5 @@ defmodule BookmarkWeb.UserResetPasswordLiveTest do
 
       assert conn.resp_body =~ "Sign in"
     end
-
-    test "redirects to password reset page when the Sign up button is clicked", %{
-      conn: conn,
-      token: token
-    } do
-      {:ok, lv, _html} = live(conn, ~p"/users/reset_password/#{token}")
-
-      {:ok, conn} =
-        lv
-        |> element(~s|main a:fl-contains("Sign up")|)
-        |> render_click()
-        |> follow_redirect(conn, ~p"/users/register")
-
-      assert conn.resp_body =~ "Sign up"
-    end
   end
 end

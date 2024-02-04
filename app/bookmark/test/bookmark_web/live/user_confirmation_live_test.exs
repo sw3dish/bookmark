@@ -8,7 +8,7 @@ defmodule BookmarkWeb.UserConfirmationLiveTest do
   alias Bookmark.Repo
 
   setup do
-    %{user: user_fixture()}
+    %{user: unconfirmed_user_fixture()}
   end
 
   describe "Confirm user" do
@@ -85,7 +85,7 @@ defmodule BookmarkWeb.UserConfirmationLiveTest do
         |> follow_redirect(conn, ~p"/")
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
-               "User confirmation link is invalid or it has expired"
+               "You must confirm your account to access this page."
 
       refute Accounts.get_user!(user.id).confirmed_at
     end

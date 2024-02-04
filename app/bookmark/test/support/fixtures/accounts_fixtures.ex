@@ -22,6 +22,18 @@ defmodule Bookmark.AccountsFixtures do
     {:ok, user} =
       %User{}
       |> User.registration_changeset(attrs)
+      |> User.confirm_changeset()
+      |> Repo.insert()
+
+    user
+  end
+
+  def unconfirmed_user_fixture(attrs \\ %{}) do
+    attrs = valid_user_attributes(attrs)
+
+    {:ok, user} =
+      %User{}
+      |> User.registration_changeset(attrs)
       |> Repo.insert()
 
     user
