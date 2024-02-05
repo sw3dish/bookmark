@@ -1,6 +1,6 @@
 <script>
   const putFavorite = (id, status) => {
-    return xPut(`http://localhost:4000/api/links/${id}`, {
+    return xPut(`<%= BookmarkWeb.Endpoint.url() %>/api/links/${id}`, {
       "link": {
         "favorite": status
       }
@@ -8,7 +8,7 @@
   }
 
   const putToRead = (id, status) => {
-    return xPut(`http://localhost:4000/api/links/${id}`, {
+    return xPut(`<%= BookmarkWeb.Endpoint.url() %>/api/links/${id}`, {
       "link": {
         "to_read": status
       }
