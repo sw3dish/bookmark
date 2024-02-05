@@ -13,13 +13,10 @@ config :bookmark, BookmarkWeb.Endpoint,
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Bookmark.Finch
 
 config :bookmark, Bookmark.Mailer,
-  adapter: Swoosh.Adapters.SMTP,
-  relay: "email-smtp.us-east-1.amazonaws.com",
-  username: System.get_env("SMTP_USERNAME"),
-  password: System.get_env("SMTP_PASSWORD"),
-  ssl: true,
-  tls: :always,
-  auth: :always
+  adapter: Swoosh.Adapters.AmazonSES,
+  region: "us-east-1",
+  access_key: {:system, "SMTP_USERNAME"},
+  secret: {:system, "SMTP_PASSWORD"}
 
 # Disable Swoosh Local Memory Storage
 config :swoosh, local: false
