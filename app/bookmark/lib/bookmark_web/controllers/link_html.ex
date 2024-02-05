@@ -2,6 +2,7 @@ defmodule BookmarkWeb.LinkHTML do
   use BookmarkWeb, :html
   alias BookmarkWeb.Helpers.HTMLHelpers
   alias BookmarkWeb.Components.Components
+  alias BookmarkWeb.Components.Nav
 
   alias Bookmark.Bookmarks.Link
 

@@ -1,18 +1,15 @@
 <Components.js_scripts />
 <.js />
-<div class="pb-3 font-semibold text-left text-zinc-900 text-sm flex w-40 justify-between">
-  <.link
-    class={"hover:underline #{assigns.conn.request_path == ~p"/" && ~s|text-red-900| }"}
-    href={~p"/"}
-  >
+<div class="pb-3 font-semibold text-left text-zinc-900 text-sm flex w-52 justify-between">
+  <Nav.link conn={@conn} href={~p"/"}>
     All
-  </.link>
-  <.link class="hover:underline" href={~p"/links/favorites"}>
+  </Nav.link>
+  <Nav.link conn={@conn} href={~p"/links/favorites"}>
     Favorites
-  </.link>
-  <.link class="hover:underline" href={~p"/links/to_read"}>
+  </Nav.link>
+  <Nav.link conn={@conn} href={~p"/links/to_read"}>
     To read
-  </.link>
+  </Nav.link>
 </div>
 <div class="font-semibold text-left text-zinc-700 text-sm">
   <%= for link <- @links do %>

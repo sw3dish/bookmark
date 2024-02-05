@@ -1,0 +1,12 @@
+<a
+  class={"""
+  before:content-['{']
+  after:content-['}']
+  #{@href == @conn.request_path && @active_classes}
+  #{@href != @conn.request_path && @inactive_classes}
+  #{@href != @conn.request_path && @hover_classes}
+  """}
+  href={@href}
+>
+  <%= render_slot(@inner_block) %>
+</a>
