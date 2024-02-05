@@ -1,16 +1,24 @@
 <Components.js_scripts />
 <.js />
-<div class="pb-3 font-semibold text-left text-zinc-900 text-sm flex w-52 justify-between">
-  <Nav.link conn={@conn} href={~p"/"}>
-    All
-  </Nav.link>
-  <Nav.link conn={@conn} href={~p"/links/favorites"}>
-    Favorites
-  </Nav.link>
-  <Nav.link conn={@conn} href={~p"/links/to_read"}>
-    To read
-  </Nav.link>
-</div>
+<nav class="pb-3 font-semibold text-left ">
+  <ul class="text-zinc-900 text-sm flex w-52 justify-between">
+    <li class="list-style-none">
+      <Nav.link conn={@conn} href={~p"/"}>
+        All
+      </Nav.link>
+    </li>
+    <li>
+      <Nav.link conn={@conn} href={~p"/links/favorites"}>
+        Favorites
+      </Nav.link>
+    </li>
+    <li>
+      <Nav.link conn={@conn} href={~p"/links/to_read"}>
+        To read
+      </Nav.link>
+    </li>
+  </ul>
+</nav>
 <div class="font-semibold text-left text-zinc-700 text-sm">
   <%= for link <- @links do %>
     <div

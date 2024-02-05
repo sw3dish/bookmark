@@ -2,9 +2,9 @@
   class={"""
   before:content-['{']
   after:content-['}']
-  #{@href == @conn.request_path && @active_classes}
-  #{@href != @conn.request_path && @inactive_classes}
-  #{@href != @conn.request_path && @hover_classes}
+  #{if @href == @conn.request_path, do: @active_classes, else: ""}
+  #{if @href != @conn.request_path, do: @inactive_classes, else: ""}
+  #{if @href != @conn.request_path, do: @hover_classes, else: ""}
   """}
   href={@href}
 >
