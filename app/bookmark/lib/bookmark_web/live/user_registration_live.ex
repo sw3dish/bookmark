@@ -38,7 +38,6 @@ defmodule BookmarkWeb.UserRegistrationLive do
           </.error>
         <% end %>
 
-
         <:actions>
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
         </:actions>
@@ -60,6 +59,7 @@ defmodule BookmarkWeb.UserRegistrationLive do
 
   def handle_event("save", %{"user" => user_params}, socket) do
     token = socket.assigns.token
+
     case Accounts.register_user_with_token(token, user_params) do
       {:ok, user} ->
         {:ok, _} =
@@ -68,7 +68,13 @@ defmodule BookmarkWeb.UserRegistrationLive do
             &url(~p"/users/confirm/#{&1}")
           )
 
-        {:noreply, socket |> put_flash(:info, "Your account has been created! Check your email to confirm your account.") |> push_navigate(to: "/users/log_in")}
+        {:noreply,
+         socket
+         |> put_flash(
+           :info,
+           "Your account has been created! Check your email to confirm your account."
+         )
+         |> push_navigate(to: "/users/log_in")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
@@ -82,6 +88,7 @@ defmodule BookmarkWeb.UserRegistrationLive do
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
     form = to_form(changeset, as: "user")
+
     if changeset.valid? do
       assign(socket, form: form, check_errors: false)
     else

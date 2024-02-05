@@ -13,10 +13,12 @@ defmodule BookmarkWeb.UserRegistrationLiveTest do
     test "renders registration page", %{conn: conn} do
       email = unique_user_email()
       inviting_user = user_fixture()
-      token = registration_token_fixture(%{
-        scoped_to_email: email,
-        generated_by_user_id: inviting_user.id,
-      })
+
+      token =
+        registration_token_fixture(%{
+          scoped_to_email: email,
+          generated_by_user_id: inviting_user.id
+        })
 
       {:ok, _lv, html} = live(conn, ~p"/users/register/#{token.token_string}")
 
@@ -28,10 +30,12 @@ defmodule BookmarkWeb.UserRegistrationLiveTest do
     test "redirects if already logged in", %{conn: conn} do
       email = unique_user_email()
       inviting_user = user_fixture()
-      token = registration_token_fixture(%{
-        scoped_to_email: email,
-        generated_by_user_id: inviting_user.id,
-      })
+
+      token =
+        registration_token_fixture(%{
+          scoped_to_email: email,
+          generated_by_user_id: inviting_user.id
+        })
 
       result =
         conn
@@ -45,10 +49,12 @@ defmodule BookmarkWeb.UserRegistrationLiveTest do
     test "renders errors for invalid data", %{conn: conn} do
       email = unique_user_email()
       inviting_user = user_fixture()
-      token = registration_token_fixture(%{
-        scoped_to_email: email,
-        generated_by_user_id: inviting_user.id,
-      })
+
+      token =
+        registration_token_fixture(%{
+          scoped_to_email: email,
+          generated_by_user_id: inviting_user.id
+        })
 
       {:ok, lv, _html} = live(conn, ~p"/users/register/#{token.token_string}")
 
@@ -67,10 +73,12 @@ defmodule BookmarkWeb.UserRegistrationLiveTest do
     test "creates account and ensure that the user still needs to confirm", %{conn: conn} do
       email = unique_user_email()
       inviting_user = user_fixture()
-      token = registration_token_fixture(%{
-        scoped_to_email: email,
-        generated_by_user_id: inviting_user.id,
-      })
+
+      token =
+        registration_token_fixture(%{
+          scoped_to_email: email,
+          generated_by_user_id: inviting_user.id
+        })
 
       {:ok, lv, _html} = live(conn, ~p"/users/register/#{token.token_string}")
 
@@ -88,10 +96,12 @@ defmodule BookmarkWeb.UserRegistrationLiveTest do
     test "renders errors for duplicated email", %{conn: conn} do
       email = unique_user_email()
       inviting_user = user_fixture()
-      token = registration_token_fixture(%{
-        scoped_to_email: email,
-        generated_by_user_id: inviting_user.id,
-      })
+
+      token =
+        registration_token_fixture(%{
+          scoped_to_email: email,
+          generated_by_user_id: inviting_user.id
+        })
 
       {:ok, lv, _html} = live(conn, ~p"/users/register/#{token.token_string}")
 
@@ -112,10 +122,12 @@ defmodule BookmarkWeb.UserRegistrationLiveTest do
     test "redirects to login page when the Sign in button is clicked", %{conn: conn} do
       email = unique_user_email()
       inviting_user = user_fixture()
-      token = registration_token_fixture(%{
-        scoped_to_email: email,
-        generated_by_user_id: inviting_user.id,
-      })
+
+      token =
+        registration_token_fixture(%{
+          scoped_to_email: email,
+          generated_by_user_id: inviting_user.id
+        })
 
       {:ok, lv, _html} = live(conn, ~p"/users/register/#{token.token_string}")
 

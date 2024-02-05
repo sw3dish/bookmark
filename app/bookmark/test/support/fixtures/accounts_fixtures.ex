@@ -40,11 +40,14 @@ defmodule Bookmark.AccountsFixtures do
   end
 
   def registration_token_fixture(%{
-    scoped_to_email: email,
-    generated_by_user_id: user_id
-  }) do
+        scoped_to_email: email,
+        generated_by_user_id: user_id
+      }) do
     {:ok, token} =
-      Bookmark.Accounts.generate_registration_token(scoped_to_email: email, generated_by_user_id: user_id)
+      Bookmark.Accounts.generate_registration_token(
+        scoped_to_email: email,
+        generated_by_user_id: user_id
+      )
 
     token
   end

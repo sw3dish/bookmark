@@ -350,6 +350,7 @@ defmodule Bookmark.Accounts do
 
   def generate_registration_token(opts \\ []) do
     {token_string, hashed_token} = RegistrationToken.build_hashed_token()
+
     %{
       token: hashed_token,
       token_string: token_string,
