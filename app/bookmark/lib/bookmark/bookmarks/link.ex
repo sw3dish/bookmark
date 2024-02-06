@@ -5,6 +5,7 @@ defmodule Bookmark.Bookmarks.Link do
   alias Bookmark.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
   schema "links" do
     field :description, :string
     field :title, :string

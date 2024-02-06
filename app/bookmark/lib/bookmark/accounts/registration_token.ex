@@ -9,6 +9,7 @@ defmodule Bookmark.Accounts.RegistrationToken do
   @rand_size 32
   @token_validity_in_days 7
 
+  @foreign_key_type :binary_id
   schema "registration_tokens" do
     field :token, :binary
     field :token_string, :string

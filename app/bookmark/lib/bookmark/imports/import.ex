@@ -4,6 +4,7 @@ defmodule Bookmark.Imports.Import do
   alias Bookmark.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
   schema "imports" do
     field :data, :string
     field :type, Ecto.Enum, values: [:pinboard, :chrome]

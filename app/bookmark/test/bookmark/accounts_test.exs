@@ -38,7 +38,7 @@ defmodule Bookmark.AccountsTest do
   describe "get_user!/1" do
     test "raises if id is invalid" do
       assert_raise Ecto.NoResultsError, fn ->
-        Accounts.get_user!(-1)
+        Accounts.get_user!("2e4e7b4e-f75c-4238-acff-889d21d37188")
       end
     end
 
@@ -485,7 +485,7 @@ defmodule Bookmark.AccountsTest do
     test "validates generated_by_user_id when supplied" do
       assert {:error, changeset} =
                Accounts.generate_registration_token(
-                 generated_by_user_id: 123_456,
+                 generated_by_user_id: "2e4e7b4e-f75c-4238-acff-889d21d37188",
                  scoped_to_email: "test@example.com"
                )
 

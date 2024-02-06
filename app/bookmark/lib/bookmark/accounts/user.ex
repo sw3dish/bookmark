@@ -4,6 +4,8 @@ defmodule Bookmark.Accounts.User do
   alias Bookmark.Bookmarks.Link
   alias Bookmark.Imports.Import
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
