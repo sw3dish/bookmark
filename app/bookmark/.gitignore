@@ -35,3 +35,4 @@ bookmark-*.tar
 npm-debug.log
 /assets/node_modules/
 
+basic.conf
