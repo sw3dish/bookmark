@@ -8,3 +8,5 @@
 - Migrate auth to dead views
 - Email digests
 - Archiving
+- Mobile CSS
+- Pagination on main view
