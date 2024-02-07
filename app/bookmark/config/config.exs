@@ -9,7 +9,10 @@ import Config
 
 config :bookmark,
   ecto_repos: [Bookmark.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [
+    timestamp_type: :utc_datetime,
+    binary_id: true
+  ]
 
 # Configures the endpoint
 config :bookmark, BookmarkWeb.Endpoint,
