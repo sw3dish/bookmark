@@ -17,33 +17,55 @@ defmodule Bookmark.Bookmarks do
       [%Link{}, ...]
 
   """
-  def list_links(current_user) do
+  def list_links(current_user, options \\ []) do
+    default_options = [before: nil, after: nil]
     query = from l in Link, where: l.user_id == ^current_user.id, order_by: [desc: l.inserted_at]
-    Repo.all(query)
+    options = Keyword.merge(default_options, options)
+    Repo.paginate(
+      query,
+      before: options[:before],
+      after: options[:after],
+      cursor_fields: [{:inserted_at, :desc}],
+      limit: 50
+    )
   end
 
   @doc """
 
   """
-  def list_favorites(current_user) do
+  def list_favorites(current_user, options \\ []) do
+    default_options = [before: nil, after: nil]
     query =
       from l in Link,
         where: l.user_id == ^current_user.id and l.favorite == true,
         order_by: [desc: l.inserted_at]
-
-    Repo.all(query)
+    options = Keyword.merge(default_options, options)
+    Repo.paginate(
+      query,
+      before: options[:before],
+      after: options[:after],
+      cursor_fields: [{:inserted_at, :desc}],
+      limit: 50
+    )
   end
 
   @doc """
 
   """
-  def list_to_read(current_user) do
+  def list_to_read(current_user, options \\ []) do
+    default_options = [before: nil, after: nil]
     query =
       from l in Link,
         where: l.user_id == ^current_user.id and l.to_read == true,
         order_by: [desc: l.inserted_at]
-
-    Repo.all(query)
+    options = Keyword.merge(default_options, options)
+    Repo.paginate(
+      query,
+      before: options[:before],
+      after: options[:after],
+      cursor_fields: [{:inserted_at, :desc}],
+      limit: 50
+    )
   end
 
   @doc """

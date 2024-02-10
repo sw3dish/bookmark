@@ -4,22 +4,28 @@ defmodule BookmarkWeb.LinkController do
   alias Bookmark.Bookmarks
   alias Bookmark.Bookmarks.Link
 
-  def index(conn, _params) do
+  def index(conn, params) do
     current_user = conn.assigns.current_user
-    links = Bookmarks.list_links(current_user)
-    render(conn, :index, links: links)
+    before = Map.get(params, "before")
+    aftr = Map.get(params, "after")
+    %{entries: entries, metadata: metadata} = Bookmarks.list_links(current_user, before: before, after: aftr)
+    render(conn, :index, links: entries, page: metadata)
   end
 
-  def favorites(conn, _params) do
+  def favorites(conn, params) do
     current_user = conn.assigns.current_user
-    links = Bookmarks.list_favorites(current_user)
-    render(conn, :index, links: links)
+    before = Map.get(params, "before")
+    aftr = Map.get(params, "after")
+    %{entries: entries, metadata: metadata} = Bookmarks.list_favorites(current_user, before: before, after: aftr)
+    render(conn, :index, links: entries, page: metadata)
   end
 
-  def to_read(conn, _params) do
+  def to_read(conn, params) do
     current_user = conn.assigns.current_user
-    links = Bookmarks.list_to_read(current_user)
-    render(conn, :index, links: links)
+    before = Map.get(params, "before")
+    aftr = Map.get(params, "after")
+    %{entries: entries, metadata: metadata} = Bookmarks.list_to_read(current_user, before: before, after: aftr)
+    render(conn, :index, links: entries, page: metadata)
   end
 
   def new(conn, _params) do

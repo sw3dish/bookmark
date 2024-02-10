@@ -53,7 +53,8 @@ defmodule Bookmark.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
-      {:timex, "~>3.7.11"}
+      {:timex, "~>3.7.11"},
+      {:paginator, github: "omarelb/paginator", ref: "dc1d6e83961ba8a9ee4f535ce1c12dfdc8577ca8"}
     ]
   end
 

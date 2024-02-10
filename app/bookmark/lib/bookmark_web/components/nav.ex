@@ -8,8 +8,13 @@ defmodule BookmarkWeb.Components.Nav do
   attr :hover_classes, :string, default: "hover:bg-zinc-900 hover:text-white"
   attr :href, :string, required: true
   attr :conn, Plug.Conn, required: true
-  
+
   slot :inner_block, required: true
 
   def link(assigns)
+
+  attr :previous_cursor, :string, required: true
+  attr :next_cursor, :string, required: true
+  attr :href, :string, required: true
+  def pagination(assigns)
 end

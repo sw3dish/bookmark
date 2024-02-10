@@ -1,0 +1,16 @@
+<%= if @previous_cursor || @next_cursor do %>
+<nav class="mt-3 font-semibold text-left">
+  <ul class="flex flex-row text-zinc-900 text-sm w-24 justify-between">
+    <%= if @next_cursor do %>
+      <li>
+        <a href={"#{@href}?after=#{@next_cursor}"}>Earlier</a>
+      </li>
+    <% end %>
+    <%= if @previous_cursor do %>
+      <li>
+        <a href={"#{@href}?before=#{@previous_cursor}"}>Later</a>
+      </li>
+    <% end %>
+  </ul>
+</nav>
+<% end %>

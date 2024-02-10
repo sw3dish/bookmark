@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y inotify-tools \
                                             build-essential \
                                             ca-certificates \
                                             curl \
-                                            gnupg
+                                            gnupg \
+                                            git
 # Install node
 RUN apt-get update && apt-get install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/sources.list.d /etc/apt/keyrings
