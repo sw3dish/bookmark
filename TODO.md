@@ -4,7 +4,6 @@
 - Improve CSS theming (+)
   - Mobile CSS (+)
 - Add invitation link page (+)
-- Pagination on main view (++)
 - Performance + accessibility (++)
 - Add tag support (++)
     - Imports from Pinboard
