@@ -26,4 +26,11 @@ defmodule Bookmark.ImportTasks do
       })
     end)
   end
+
+  def import_links_from_chrome(import_id, file_contents, current_user) do
+    Task.Supervisor.start_child(Bookmark.ImportTaskSupervisor, fn ->
+      links_to_import = Imports.load_chrome_html_bookmarks(file_contents)
+      require IEx; IEx.pry
+    end)
+  end
 end

@@ -134,4 +134,24 @@ defmodule Bookmark.Imports do
     |> PinboardImportLink.changeset(attrs)
     |> Ecto.Changeset.apply_action(:update)
   end
+
+  alias Bookmark.Imports.ChromeHtmlImportLink
+
+  def load_chrome_html_bookmarks(data) do
+    {:ok, html} = Floki.parse_document(data)
+
+    links = Floki.find(html, "a")
+
+    Enum.map(links, fn link ->
+      [title] = Floki.children(link)
+      [url] = Floki.attribute(link, "a", "href")
+      [inserted_at] = Floki.attribute(link, "a", "add_date")
+
+      %{
+        title: title,
+        url: url,
+        inserted_at: Bookmark.ImportHelpers.get_date_from_netscape_date(inserted_at)
+      }
+    end)
+  end
 end
