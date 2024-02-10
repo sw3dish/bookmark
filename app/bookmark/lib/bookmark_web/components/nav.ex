@@ -13,8 +13,8 @@ defmodule BookmarkWeb.Components.Nav do
 
   def link(assigns)
 
-  attr :previous_cursor, :string, required: true
-  attr :next_cursor, :string, required: true
+  attr :previous_cursor, :string
+  attr :next_cursor, :string
   attr :href, :string, required: true
   def pagination(assigns)
 end
