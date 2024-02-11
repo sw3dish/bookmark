@@ -154,4 +154,16 @@ defmodule Bookmark.Imports do
       }
     end)
   end
+
+  def import_link_from_chrome_html(chrome_link \\ %PinboardImportLink{}, current_user) do
+    link_attrs = Map.from_struct(chrome_link)
+    link_attrs = Map.put(link_attrs, :user_id, current_user.id)
+    Bookmarks.create_link(link_attrs)
+  end
+
+  def create_chrome_html_import_link(attrs) do
+    %ChromeHtmlImportLink{}
+    |> ChromeHtmlImportLink.changeset(attrs)
+    |> Ecto.Changeset.apply_action(:update)
+  end
 end
