@@ -19,6 +19,7 @@ defmodule Bookmark.Bookmarks do
   """
   def list_links(current_user, options \\ []) do
     query = from l in Link, where: l.user_id == ^current_user.id, order_by: [desc: l.inserted_at]
+
     Repo.paginate(
       query,
       before: options[:before],
@@ -36,6 +37,7 @@ defmodule Bookmark.Bookmarks do
       from l in Link,
         where: l.user_id == ^current_user.id and l.favorite == true,
         order_by: [desc: l.inserted_at]
+
     Repo.paginate(
       query,
       before: options[:before],
@@ -53,6 +55,7 @@ defmodule Bookmark.Bookmarks do
       from l in Link,
         where: l.user_id == ^current_user.id and l.to_read == true,
         order_by: [desc: l.inserted_at]
+
     Repo.paginate(
       query,
       before: options[:before],

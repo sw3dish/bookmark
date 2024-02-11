@@ -8,7 +8,10 @@ defmodule BookmarkWeb.LinkController do
     current_user = conn.assigns.current_user
     before = Map.get(params, "before")
     aftr = Map.get(params, "after")
-    %{entries: entries, metadata: metadata} = Bookmarks.list_links(current_user, before: before, after: aftr)
+
+    %{entries: entries, metadata: metadata} =
+      Bookmarks.list_links(current_user, before: before, after: aftr)
+
     render(conn, :index, links: entries, page: metadata)
   end
 
@@ -16,7 +19,10 @@ defmodule BookmarkWeb.LinkController do
     current_user = conn.assigns.current_user
     before = Map.get(params, "before")
     aftr = Map.get(params, "after")
-    %{entries: entries, metadata: metadata} = Bookmarks.list_favorites(current_user, before: before, after: aftr)
+
+    %{entries: entries, metadata: metadata} =
+      Bookmarks.list_favorites(current_user, before: before, after: aftr)
+
     render(conn, :index, links: entries, page: metadata)
   end
 
@@ -24,7 +30,10 @@ defmodule BookmarkWeb.LinkController do
     current_user = conn.assigns.current_user
     before = Map.get(params, "before")
     aftr = Map.get(params, "after")
-    %{entries: entries, metadata: metadata} = Bookmarks.list_to_read(current_user, before: before, after: aftr)
+
+    %{entries: entries, metadata: metadata} =
+      Bookmarks.list_to_read(current_user, before: before, after: aftr)
+
     render(conn, :index, links: entries, page: metadata)
   end
 

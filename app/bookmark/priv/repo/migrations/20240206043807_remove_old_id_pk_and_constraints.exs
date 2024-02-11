@@ -16,7 +16,7 @@ defmodule Bookmark.Repo.Migrations.RemoveOldIdPkAndConstraints do
     end
 
     rename table(:users), :uuid, to: :id
-    
+
     # swap to using new user id as foreign key
     # by dropping old column, renaming new column, add foreign key index to new column
     alter table(:imports) do
@@ -28,7 +28,7 @@ defmodule Bookmark.Repo.Migrations.RemoveOldIdPkAndConstraints do
     flush()
 
     alter table(:imports) do
-      modify :user_id, references(:users, type: :binary_id)   
+      modify :user_id, references(:users, type: :binary_id)
     end
 
     alter table(:links) do
@@ -40,7 +40,7 @@ defmodule Bookmark.Repo.Migrations.RemoveOldIdPkAndConstraints do
     flush()
 
     alter table(:links) do
-      modify :user_id, references(:users, type: :binary_id)   
+      modify :user_id, references(:users, type: :binary_id)
     end
 
     alter table(:registration_tokens) do
