@@ -22,7 +22,33 @@ defmodule Bookmark.ImportTasks do
         errors: errors,
         count: count,
         status: :completed,
-        completed_at: NaiveDateTime.local_now()
+        completed_at: NaiveDateTime.utc_now()
+      })
+    end)
+  end
+
+  def import_links_from_chrome(import_id, file_contents, current_user) do
+    Task.Supervisor.start_child(Bookmark.ImportTaskSupervisor, fn ->
+      links_to_import = Imports.load_chrome_html_bookmarks(file_contents)
+
+      {count, errors} =
+        Enum.reduce(links_to_import, {0, []}, fn link, {count, errors} ->
+          with {:ok, chrome_link} <- Imports.create_chrome_html_import_link(link),
+               {:ok, _} <- Imports.import_link_from_chrome_html(chrome_link, current_user) do
+            {count + 1, errors}
+          else
+            {:error, %Ecto.Changeset{errors: changeset_errors}} ->
+              {count, errors ++ [{link, changeset_errors}]}
+          end
+        end)
+
+      import = Imports.get_import!(import_id, current_user)
+
+      Imports.update_import(import, %{
+        errors: errors,
+        count: count,
+        status: :completed,
+        completed_at: NaiveDateTime.utc_now()
       })
     end)
   end

@@ -20,10 +20,11 @@ defmodule BookmarkWeb.ImportController do
         conn,
         %{
           "import" => %{
-            "export" => %Plug.Upload{content_type: "application/json", path: path}
+            "export" => %Plug.Upload{content_type: content_type, path: path}
           }
         } = import_params
-      ) do
+      )
+      when content_type in ["application/json", "text/html"] do
     export_contents = File.read!(path)
     import_params = Kernel.put_in(import_params, ["import", "data"], export_contents)
     {_export, import_params} = Kernel.pop_in(import_params, ["import", "export"])
@@ -35,8 +36,21 @@ defmodule BookmarkWeb.ImportController do
     import_params = Map.put(import_params, "user_id", current_user.id)
 
     case Imports.create_import(import_params) do
-      {:ok, import} ->
+      {:ok,
+       %Import{
+         type: :pinboard
+       } = import} ->
         ImportTasks.import_links_from_pinboard(import.id, import.data, current_user)
+
+        conn
+        |> put_flash(:info, "Import started")
+        |> redirect(to: ~p"/imports/#{import}")
+
+      {:ok,
+       %Import{
+         type: :chrome
+       } = import} ->
+        ImportTasks.import_links_from_chrome(import.id, import.data, current_user)
 
         conn
         |> put_flash(:info, "Import started")
