@@ -36,6 +36,8 @@ defmodule BookmarkWeb.Router do
     get "/links/to_read", LinkController, :to_read
     resources "/links", LinkController, except: [:index]
     resources "/imports", ImportController, except: [:edit, :update, :delete]
+    get "/users/invite", InvitationController, :new
+    post "/users/invite", InvitationController, :create 
   end
 
   scope "/bookmarklet", BookmarkWeb do
