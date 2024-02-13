@@ -1,0 +1,13 @@
+<.simple_form :let={f} for={@changeset} action={@action} multipart>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input
+    field={f[:scoped_to_email]}
+    type="text"
+    label="Invite"
+  />
+  <:actions>
+    <.button>Invite</.button>
+  </:actions>
+</.simple_form>

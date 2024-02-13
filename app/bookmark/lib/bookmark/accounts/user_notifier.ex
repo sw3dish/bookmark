@@ -76,4 +76,20 @@ defmodule Bookmark.Accounts.UserNotifier do
     ==============================
     """)
   end
+
+  def deliver_invitation(email, url) do
+    deliver(email, "Bookmark Invitation", """
+
+    ==============================
+
+    Hi #{email},
+
+    You have been invited to join Bookmark! You can accept your invite by
+    visiting the URL below:
+
+    #{url}
+
+    ==============================
+    """)
+  end
 end

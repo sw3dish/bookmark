@@ -414,4 +414,8 @@ defmodule Bookmark.Accounts do
     |> Ecto.Changeset.add_error(:registration_token, "Invalid registration token")
     |> Ecto.Changeset.apply_action(:update)
   end
+
+  def public_create(%RegistrationToken{} = token, attrs \\ %{}) do
+    RegistrationToken.public_create_changeset(token, attrs)
+  end
 end

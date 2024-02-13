@@ -1,0 +1,8 @@
+<.header>
+  New Invitation
+  <:subtitle>Use this form to manage import records in your database.</:subtitle>
+</.header>
+
+<.invitation_form changeset={@changeset} action={~p"/users/invite"} />
+
+<.back navigate={~p"/"}>Back to imports</.back>

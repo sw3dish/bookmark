@@ -26,6 +26,12 @@ defmodule Bookmark.Accounts.RegistrationToken do
     {Base.url_encode64(token_string, padding: false), hashed_token}
   end
 
+  def public_create_changeset(token, attrs) do
+    token
+    |> cast(attrs, [:scoped_to_email])
+    |> validate_required([:scoped_to_email])
+  end
+
   def create_changeset(attrs) do
     %__MODULE__{}
     |> cast(attrs, [:token, :token_string, :scoped_to_email, :generated_by_user_id])
