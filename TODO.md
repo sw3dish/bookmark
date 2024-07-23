@@ -14,3 +14,5 @@
     - Hound/Wallaby to stay within Elixir?
 - Mobile app for share sheet/activity view  (bookmark from Safari) (++++)
 - Email inbox to add links, send back text of article (+++)
+- Email to save link (++)
+- Email to retrieve link (++)
