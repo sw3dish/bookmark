@@ -8,7 +8,7 @@ defmodule Bookmark.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Bookmark", "marquee@colin.id"})
+      |> from({"Bookmark", "bookmarq@bookmarq.link"})
       |> subject(subject)
       |> text_body(body)
 

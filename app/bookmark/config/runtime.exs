@@ -5,6 +5,25 @@ import Config
 # system starts, so it is typically used to load production configuration
 # and secrets from environment variables or elsewhere. Do not define
 # any compile-time configuration in here, as it won't be applied.
+#
+# Dev runtime configuration
+
+if config_env() == :dev do
+
+  # # Uses Sendgrid to send emails
+  # # Configures Swoosh API Client
+  # config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Bookmark.Finch
+
+  # config :bookmark, Bookmark.Mailer,
+  #   adapter: Swoosh.Adapters.Sendgrid,
+  # api_key: System.get_env("SENDGRID_API_KEY_FILE") |> File.read!() |> String.trim()
+
+
+  # # Disable Swoosh Local Memory Storage
+  # config :swoosh, local: false
+
+end
+
 # The block below contains prod specific runtime configuration.
 
 # ## Using releases
@@ -114,4 +133,15 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  # Configures Swoosh API Client
+  config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Bookmark.Finch
+
+  config :bookmark, Bookmark.Mailer,
+    adapter: Swoosh.Adapters.Sendgrid,
+    api_key: {:system, "SENDGRID_API_KEY"}
+
+
+  # Disable Swoosh Local Memory Storage
+  config :swoosh, local: false
 end

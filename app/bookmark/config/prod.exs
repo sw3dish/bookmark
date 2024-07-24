@@ -6,20 +6,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :bookmark, BookmarkWeb.Endpoint,
-  cache_static_manifest: "priv/static/cache_manifest.json",
-  url: [host: "https://marquee.fly.dev"]
-
-# Configures Swoosh API Client
-config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Bookmark.Finch
-
-config :bookmark, Bookmark.Mailer,
-  adapter: Swoosh.Adapters.AmazonSES,
-  region: "us-east-1",
-  access_key: {:system, "SMTP_USERNAME"},
-  secret: {:system, "SMTP_PASSWORD"}
-
-# Disable Swoosh Local Memory Storage
-config :swoosh, local: false
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info

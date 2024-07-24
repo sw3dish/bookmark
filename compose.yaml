@@ -8,6 +8,9 @@ services:
       PGDATABASE: bookmark
       PGPORT: 5432
       PGHOST: db
+      SENDGRID_API_KEY_FILE: /run/secrets/SENDGRID_API_KEY
+    secrets:
+      - SENDGRID_API_KEY
     ports:
       - "4000:4000"
     depends_on:
@@ -28,3 +31,6 @@ services:
 volumes:
   pgdata:
 
+secrets:
+  SENDGRID_API_KEY:
+    file: ./.sendgrid_api_key
